@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Комбинат питания «Будь Здоров» — Домашняя кухня в Ростове-на-Дону | eda.bz</title>
+    <meta name="description" content="Комбинат питания «Будь Здоров» — здоровое питание каждому человеку с 1998 года. Банкеты, свадьбы, юбилеи, поминальные обеды, корпоративы. Летняя площадка с мангалом.">
+    <meta property="og:title" content="Комбинат питания «Будь Здоров» — Домашняя кухня в Ростове-на-Дону">
+    <meta property="og:description" content="Здоровое питание каждому человеку с 1998 года. Банкеты, свадьбы, корпоративы, летняя площадка.">
+    <meta property="og:image" content="img/hero-buffet.jpg">
+    <meta property="og:url" content="https://eda.bz">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        @font-face {
+            font-family: 'PF Agora Serif Pro';
+            src: url('fonts/PFAgoraSerifPro-Regular.ttf') format('truetype');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'PF Agora Serif Pro';
+            src: url('fonts/PFAgoraSerifPro-Bold.ttf') format('truetype');
+            font-weight: 700; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'PF Agora Serif Pro';
+            src: url('fonts/PFAgoraSerifPro-Italic.ttf') format('truetype');
+            font-weight: 400; font-style: italic; font-display: swap;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --red: #CC0000;
+            --red-dark: #A00000;
+            --red-light: #E53935;
+            --yellow: #F9A825;
+            --yellow-light: #FFD600;
+            --green: #4CAF50;
+            --green-dark: #2E7D32;
+            --white: #FFFFFF;
+            --cream: #FFFAF5;
+            --cream-dark: #FFF3E8;
+            --gray-light: #F5F5F5;
+            --gray: #757575;
+            --gray-dark: #333333;
+            --font-heading: 'PF Agora Serif Pro', Georgia, 'Times New Roman', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--gray-dark);
+            line-height: 1.6;
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        img { max-width: 100%; height: auto; display: block; }
+        a { text-decoration: none; color: inherit; }
+
+        /* ========== HEADER ========== */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000; padding: 0.6rem 1.5rem;
+            transition: background 0.3s, box-shadow 0.3s, padding 0.3s;
+        }
+        .header.scrolled {
+            background: rgba(255,255,255,0.97);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            padding: 0.4rem 1.5rem;
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header-logo-wrap { display: flex; align-items: center; gap: 0.5rem; }
+        .header-logo-img { height: 52px; width: auto; }
+        .nav { display: flex; gap: 1.5rem; align-items: center; }
+        .nav a {
+            font-size: 0.9rem; font-weight: 500; color: var(--white);
+            transition: color 0.3s; position: relative;
+        }
+        .nav a::after {
+            content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+            height: 2px; background: var(--yellow); transform: scaleX(0);
+            transition: transform 0.3s; border-radius: 1px;
+        }
+        .nav a:hover::after { transform: scaleX(1); }
+        .header.scrolled .nav a { color: var(--gray-dark); }
+        .header.scrolled .nav a:hover { color: var(--red); }
+        .header.scrolled .nav a:hover::after { background: var(--red); }
+        .nav-phone {
+            display: flex; align-items: center; gap: 0.4rem; font-weight: 600;
+            background: var(--red); color: var(--white) !important;
+            padding: 0.5rem 1.2rem; border-radius: 50px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .nav-phone::after { display: none !important; }
+        .nav-phone:hover { background: var(--red-dark) !important; transform: scale(1.03); }
+        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; }
+        .burger span { width: 26px; height: 3px; background: var(--white); border-radius: 3px; transition: all 0.3s; }
+        .header.scrolled .burger span { background: var(--gray-dark); }
+
+        /* ========== HERO ========== */
+        .hero {
+            position: relative; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background: url('img/hero-buffet.jpg') center/cover no-repeat;
+            z-index: -2;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0; z-index: -1;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.4) 0%,
+                rgba(0,0,0,0.15) 40%,
+                rgba(0,0,0,0.25) 70%,
+                rgba(0,0,0,0.6) 100%
+            );
+        }
+        .hero-content {
+            padding: 2rem 1.5rem; max-width: 850px;
+            animation: fadeInUp 1s ease-out;
+        }
+        .hero-logo-img {
+            width: min(420px, 80vw); height: auto; margin: 0 auto 1.5rem;
+            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.6));
+        }
+        .hero-subtitle {
+            font-family: var(--font-heading);
+            font-size: clamp(1.3rem, 3.5vw, 2rem);
+            color: var(--white); margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+        .hero-tagline {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: rgba(255,255,255,0.9); margin-bottom: 2.5rem;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.3);
+            font-style: italic;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 1rem 2.5rem; background: var(--yellow);
+            color: var(--gray-dark); font-size: 1.1rem; font-weight: 700;
+            border-radius: 50px; transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(249,168,37,0.5);
+        }
+        .hero-cta:hover {
+            background: var(--yellow-light); transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(249,168,37,0.6);
+        }
+
+        /* Brand swoosh decoration at hero bottom */
+        .hero-swoosh {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            z-index: 1;
+        }
+        .hero-swoosh-svg { width: 100%; height: auto; display: block; }
+
+        /* ========== BRAND ICONS STRIP ========== */
+        .brand-strip {
+            background: var(--cream);
+            padding: 1.5rem 1rem;
+            display: flex; justify-content: center; align-items: center;
+            gap: clamp(0.5rem, 2.5vw, 2.5rem);
+            flex-wrap: nowrap;
+            position: relative; z-index: 2;
+        }
+        .brand-icon {
+            height: clamp(28px, 5.5vw, 56px); width: auto; max-height: 52px; padding: 2px;
+            opacity: 0.9; transition: transform 0.3s, opacity 0.3s;
+            object-fit: contain; flex-shrink: 1; min-width: 0;
+        }
+        .brand-icon:hover { transform: scale(1.15); opacity: 1; }
+
+        /* ========== SECTIONS COMMON ========== */
+        .section { padding: 5rem 1.5rem; position: relative; }
+        .section-inner { max-width: 1100px; margin: 0 auto; }
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            color: var(--red); text-align: center; margin-bottom: 1rem;
+        }
+        .section-title-deco {
+            display: flex; align-items: center; justify-content: center; gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-title-deco .deco-line {
+            width: 60px; height: 2px; background: var(--yellow); border-radius: 1px;
+        }
+        .section-title-deco .deco-icon { width: 34px; height: 34px; object-fit: contain; padding: 3px; }
+        .section-lead {
+            text-align: center; color: var(--gray); font-size: 1.05rem;
+            max-width: 650px; margin: 0 auto 3rem; line-height: 1.7;
+        }
+
+        /* ========== ABOUT ========== */
+        .about { background: var(--cream); }
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 3rem; align-items: center;
+        }
+        .about-img {
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            position: relative;
+        }
+        .about-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .about-img:hover img { transform: scale(1.03); }
+        .about-img::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--red), var(--yellow), var(--red));
+            border-radius: 0 0 16px 16px;
+        }
+        .about-text h3 {
+            font-family: var(--font-heading); font-size: 1.6rem;
+            color: var(--red); margin-bottom: 1rem;
+        }
+        .about-text p { margin-bottom: 1rem; color: var(--gray-dark); line-height: 1.8; }
+        .about-features {
+            display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem;
+        }
+        .about-feature {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--white); padding: 0.6rem 1.1rem; border-radius: 50px;
+            font-size: 0.9rem; font-weight: 500; color: var(--gray-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 3px solid var(--red);
+        }
+        .about-feature img { flex-shrink: 0; object-fit: contain; }
+
+        /* ========== SERVICES (NEW DESIGN) ========== */
+        .services { background: var(--white); }
+        .services-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
+        }
+        .service-card {
+            border-radius: 16px; overflow: hidden; position: relative;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 50px rgba(0,0,0,0.15);
+        }
+        .service-card-img {
+            height: 220px; overflow: hidden;
+            position: relative;
+        }
+        .service-card-img img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .service-card:hover .service-card-img img {
+            transform: scale(1.06);
+        }
+        /* Subtle gradient at bottom of photo for smooth transition */
+        .service-card-img::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 40px;
+            background: linear-gradient(to top, var(--cream), transparent);
+            pointer-events: none;
+        }
+        .service-card-body {
+            padding: 1.5rem 1.5rem 1.8rem;
+            background: var(--cream);
+        }
+        .service-card-title {
+            font-family: var(--font-heading); font-size: 1.3rem;
+            color: var(--gray-dark); margin-bottom: 0.6rem;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .service-card-title img {
+            width: 30px; height: 30px; object-fit: contain; flex-shrink: 0;
+        }
+        .service-card-body p {
+            font-size: 0.93rem; color: var(--gray); line-height: 1.7;
+        }
+        /* Yellow accent bar at bottom */
+        .service-card::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+            height: 4px; background: var(--yellow); z-index: 3;
+            border-radius: 0 0 16px 16px;
+        }
+
+        /* ========== DELIVERY ========== */
+        .delivery { background: var(--gray-light); }
+        .delivery-inner {
+            display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto;
+        }
+        .delivery-img { border-radius: 16px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.15); align-self: flex-end; }
+        .delivery-img img { width: 100%; height: auto; display: block; }
+        /* delivery-text h2 removed — title is now .section-title above grid */
+        .delivery-text p { color: var(--gray-dark); margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.05rem; }
+        .delivery-feature { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-weight: 500; }
+        .delivery-feature svg { color: var(--yellow); flex-shrink: 0; }
+
+        /* ========== KITCHEN (SCALE) ========== */
+        .kitchen { background: var(--white); }
+        .kitchen-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1100px; margin: 0 auto;
+        }
+        .kitchen-img { border-radius: 16px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 1rem; align-self: flex-end; }
+        .kitchen-img img { width: 100%; height: auto; object-fit: cover; }
+        .kitchen-img .img-main { aspect-ratio: 16/9; }
+        .kitchen-img .img-sub { aspect-ratio: 21/9; }
+        /* kitchen-text h2 removed — title is now .section-title above grid */
+        .kitchen-text p { color: var(--gray-dark); margin-bottom: 1.2rem; line-height: 1.8; font-size: 1.05rem; }
+        .kitchen-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+        .kitchen-stat { background: var(--cream); padding: 1.2rem; border-radius: 12px; border-left: 4px solid var(--yellow); }
+        .kitchen-stat h4 { font-size: 1.8rem; color: var(--red); font-family: var(--font-heading); margin-bottom: 0.2rem; line-height: 1; }
+        .kitchen-stat span { font-size: 0.85rem; color: var(--gray-dark); font-weight: 500; }
+
+        /* ========== REVIEWS CAROUSEL ========== */
+        .reviews { background: var(--white); overflow: hidden; }
+        .reviews-slider-wrap { max-width: 1100px; margin: 0 auto; position: relative; padding: 0 3rem; }
+        .reviews-slider { display: flex; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); gap: 2rem; }
+        .review-card {
+            flex: 0 0 calc(50% - 1rem); box-sizing: border-box;
+            padding: 2.5rem; text-align: left;
+            border: 2px solid var(--gray-light); border-radius: 12px;
+            background: var(--white);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .review-card:hover { border-color: rgba(204,0,0,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .review-text { font-size: 1.05rem; font-style: italic; color: var(--gray-dark); margin-bottom: 1.5rem; line-height: 1.7; position: relative; }
+        .review-text::before {
+            content: '\00AB'; position: absolute; top: -1rem; left: -1rem;
+            font-size: 3rem; color: rgba(204,0,0,0.1); font-family: var(--font-heading);
+            line-height: 1;
+        }
+        .review-author { font-weight: 700; color: var(--red); font-size: 1.05rem; display: block;}
+        .review-event { font-size: 0.9rem; color: var(--gray); display: block; margin-top: 0.2rem; }
+        .reviews-nav { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2.5rem; }
+        .reviews-dot { width: 12px; height: 12px; border-radius: 50%; background: #eee; border: none; cursor: pointer; transition: background 0.3s; padding: 0;}
+        .reviews-dot.active { background: var(--red); }
+        .reviews-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 2.5rem; color: var(--gray); cursor: pointer; transition: color 0.3s; padding: 10px; z-index: 10;}
+        .reviews-arrow:hover { color: var(--red); }
+        .reviews-prev { left: -10px; }
+        .reviews-next { right: -10px; }
+
+        /* ========== FOOD GALLERY ========== */
+        .gallery { background: var(--cream); }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 250px;
+            gap: 1rem;
+        }
+        .gallery-item {
+            border-radius: 14px; overflow: hidden;
+            cursor: pointer; position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        .gallery-item.tall { grid-row: span 2; }
+        .gallery-item.wide { grid-column: span 2; }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+        .gallery-item::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .gallery-item:hover::after { opacity: 1; }
+        .gallery-caption {
+            position: absolute; bottom: 0.75rem; left: 1rem;
+            color: white; font-weight: 600; font-size: 0.9rem;
+            z-index: 2; opacity: 0; transform: translateY(10px);
+            transition: all 0.3s;
+        }
+        .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
+
+        /* ========== LIGHTBOX ========== */
+        .lightbox {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+            z-index: 2000; display: none; align-items: center;
+            justify-content: center; padding: 2rem; cursor: pointer;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90%; max-height: 85vh; border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+        }
+        .lightbox-close {
+            position: absolute; top: 1.5rem; right: 1.5rem;
+            width: 44px; height: 44px; background: rgba(255,255,255,0.15);
+            border: none; border-radius: 50%; color: white; font-size: 1.5rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: background 0.3s;
+        }
+        .lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+        /* ========== CONTACTS ========== */
+        .contacts { background: var(--white); }
+        .contacts-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 2.5rem; align-items: start;
+        }
+        .contacts-info { display: flex; flex-direction: column; gap: 1.5rem; }
+        .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
+        .contact-icon {
+            flex-shrink: 0; width: 48px; height: 48px;
+            background: linear-gradient(135deg, var(--red), var(--red-light));
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; color: white;
+        }
+        .contact-item h4 {
+            font-size: 0.8rem; color: var(--gray); text-transform: uppercase;
+            letter-spacing: 0.06em; margin-bottom: 0.2rem; font-weight: 500;
+        }
+        .contact-item p, .contact-item a {
+            font-size: 1.05rem; color: var(--gray-dark); font-weight: 500;
+        }
+        .contact-item a:hover { color: var(--red); }
+        .contact-phone-link {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--red); color: var(--white) !important;
+            padding: 0.9rem 2.2rem; border-radius: 50px;
+            font-size: 1.15rem; font-weight: 700; transition: all 0.3s;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 18px rgba(204,0,0,0.3);
+        }
+        .contact-phone-link:hover {
+            background: var(--red-dark); transform: translateY(-2px);
+            color: var(--white) !important;
+            box-shadow: 0 8px 25px rgba(204,0,0,0.4);
+        }
+        .contacts-map {
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1); aspect-ratio: 4/3;
+        }
+        .contacts-map iframe { width: 100%; height: 100%; border: 0; }
+
+        /* ========== FOOTER (NEW DESIGN) ========== */
+        .footer {
+            background: #2B2B2B; color: rgba(255,255,255,0.7);
+            padding: 0; position: relative; overflow: hidden;
+        }
+        /* Mirrored hero swoosh at footer top */
+        .footer-wave-top {
+            position: relative; z-index: 2; margin-top: -1px;
+        }
+        .footer-swoosh-svg { display: block; width: 100%; height: auto; }
+        .footer-main {
+            max-width: 1100px; margin: 0 auto;
+            padding: 3.5rem 1.5rem 2.5rem;
+            display: grid; grid-template-columns: 1.2fr 1fr 0.8fr;
+            gap: 2.5rem;
+            position: relative; z-index: 1;
+        }
+        .footer-brand {
+            display: flex; flex-direction: column; gap: 1rem;
+            align-items: flex-start;
+        }
+        .footer-logo { height: 48px; width: auto; opacity: 0.95; }
+        .footer-motto {
+            font-family: var(--font-heading); font-style: italic;
+            font-size: 1rem; color: rgba(255,255,255,0.55);
+            max-width: 280px; line-height: 1.6;
+        }
+        .footer-social {
+            display: flex; gap: 0.8rem; margin-top: 0.5rem;
+        }
+        .footer-social a {
+            width: 38px; height: 38px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(255,255,255,0.5);
+            transition: background 0.3s, color 0.3s, transform 0.2s;
+        }
+        .footer-social a:hover {
+            background: var(--red); color: var(--white);
+            transform: translateY(-2px);
+        }
+        .footer-contacts-col h4 {
+            font-family: var(--font-heading);
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--yellow); margin-bottom: 0.8rem; font-weight: 700;
+        }
+        .footer-contacts-col p,
+        .footer-contacts-col a {
+            display: block; font-size: 0.93rem; color: rgba(255,255,255,0.65);
+            line-height: 1.9; transition: color 0.3s;
+        }
+        .footer-contacts-col a:hover { color: var(--yellow); }
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 1.2rem 1.5rem;
+            position: relative; z-index: 1;
+        }
+        .footer-bottom-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 0.5rem;
+        }
+        .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+        .footer-back-top {
+            font-size: 0.85rem; color: rgba(255,255,255,0.45);
+            transition: color 0.3s, transform 0.2s;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .footer-back-top:hover { color: var(--yellow); transform: translateY(-2px); }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .fade-in.d1 { transition-delay: 0.1s; }
+        .fade-in.d2 { transition-delay: 0.2s; }
+        .fade-in.d3 { transition-delay: 0.3s; }
+        .fade-in.d4 { transition-delay: 0.4s; }
+
+        /* ========== MOBILE NAV ========== */
+        .mobile-nav {
+            position: fixed; top: 0; right: -300px; width: 280px;
+            height: 100vh; background: var(--white); z-index: 1100;
+            padding: 5rem 2rem 2rem; transition: right 0.35s ease;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.2);
+        }
+        .mobile-nav.open { right: 0; }
+        .mobile-nav a {
+            display: block; padding: 0.8rem 0; font-size: 1.1rem;
+            font-weight: 500; color: var(--gray-dark);
+            border-bottom: 1px solid var(--gray-light);
+        }
+        .mobile-nav a:hover { color: var(--red); }
+        .mobile-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            z-index: 1050; display: none;
+        }
+        .mobile-overlay.active { display: block; }
+        .mobile-nav-phone { color: var(--red); font-weight: 700; border: none; margin-top: 1rem; }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .nav { display: none; }
+            .burger { display: flex; }
+            .about-grid, .contacts-grid, .kitchen-grid { grid-template-columns: 1fr; }
+            .delivery-inner { grid-template-columns: 1fr; gap: 2rem; }
+            .about-img { max-height: 350px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
+            .gallery-item.wide { grid-column: span 1; }
+            .gallery-item.tall { grid-row: span 1; }
+            .footer-main { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+            .footer-brand { align-items: center; }
+            .footer-motto { max-width: 100%; }
+            .footer-social { justify-content: center; }
+            .footer-bottom-inner { justify-content: center; text-align: center; flex-direction: column; }
+        }
+        @media (max-width: 600px) {
+            .section { padding: 3.5rem 1rem; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .hero-cta { padding: 0.85rem 2rem; font-size: 1rem; }
+            .service-card-img { height: 180px; }
+            .service-card-body { padding: 1.2rem; }
+            .service-card-title { font-size: 1.15rem; }
+            .reviews-slider-wrap { padding: 0 1rem; }
+            .reviews-arrow { display: none; }
+            .review-card { flex: 0 0 100%; padding: 1.5rem; }
+            .kitchen-stat-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ========== DARK THEME ========== */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --white: #1a1a1a;
+                --cream: #222222;
+                --cream-dark: #2a2a2a;
+                --gray-light: #2d2d2d;
+                --gray: #AAAAAA;
+                --gray-dark: #E8E8E8;
+                --red: #EF4444;
+                --red-dark: #DC2626;
+                --red-light: #F87171;
+            }
+            body { background: #1a1a1a; color: #E8E8E8; }
+
+            /* ---- FIX: elements that need true white (not dark-mode --white) ---- */
+            .nav a { color: #FFFFFF; }
+            .nav-phone { color: #FFFFFF !important; }
+            .hero-subtitle { color: #FFFFFF; }
+            .hero-tagline { color: rgba(255,255,255,0.9); }
+            .hero-cta { color: #333333; background: var(--yellow); }
+            .burger span { background: #FFFFFF; }
+            .contact-phone-link { color: #FFFFFF !important; }
+
+            /* ---- Header scrolled ---- */
+            .header.scrolled {
+                background: rgba(26,26,26,0.97);
+                box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+            }
+            .header.scrolled .nav a { color: #E8E8E8; }
+            .header.scrolled .nav a:hover { color: var(--yellow); }
+            .header.scrolled .nav a:hover::after { background: var(--yellow); }
+            .header.scrolled .burger span { background: #E8E8E8; }
+
+            /* ---- Hero swoosh ---- */
+            .hero-swoosh-svg path:first-child { fill: #222222; }
+
+            /* ---- Brand strip ---- */
+            .brand-strip { background: #222222; }
+            .brand-icon { opacity: 0.85; }
+
+            /* ---- Section titles — bright enough red via variable ---- */
+            .section-title { color: var(--red); }
+            .section-lead { color: #BBBBBB; }
+
+            /* ---- About section ---- */
+            .about-text h3 { color: var(--red); }
+            .about-feature { border-left-color: var(--red); }
+
+            /* ---- Service cards ---- */
+            .service-card-img::after {
+                background: linear-gradient(to top, #222222, transparent);
+            }
+            .service-card-body p { color: #BBBBBB; }
+
+            /* ---- Delivery ---- */
+            .delivery-text p { color: #CCCCCC; }
+            .delivery-feature { color: #E8E8E8; }
+
+            /* ---- Kitchen ---- */
+            .kitchen-text p { color: #CCCCCC; }
+            .kitchen-stat { border-left-color: var(--yellow); }
+            .kitchen-stat h4 { color: var(--red); }
+
+            /* ---- Reviews ---- */
+            .reviews-dot { background: #444; }
+            .review-text { color: #D4D4D4; }
+            .review-text::before { color: rgba(239,68,68,0.15); }
+            .review-author { color: var(--red); }
+            .review-event { color: #AAAAAA; }
+            .review-card { border-color: #3a3a3a; }
+            .review-card:hover { border-color: rgba(239,68,68,0.3); }
+
+            /* ---- Gallery ---- */
+            .gallery-item { box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+            /* ---- Contacts ---- */
+            .contact-item h4 { color: #AAAAAA; }
+            .contact-item p, .contact-item a { color: #E8E8E8; }
+            .contacts-map { box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+
+            /* ---- Mobile nav ---- */
+            .mobile-nav {
+                background: #2d2d2d;
+                box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+            }
+            .mobile-nav a {
+                color: #E8E8E8;
+                border-bottom-color: #444;
+            }
+            .mobile-nav a:hover { color: var(--yellow); }
+            .mobile-nav-phone { color: var(--red) !important; }
+
+            /* ---- Footer ---- */
+            .footer-swoosh-svg path:first-child { fill: #2B2B2B; }
+            .footer-contacts-col h4 { color: var(--yellow); }
+
+            /* ---- Lightbox ---- */
+            .lightbox-close { background: rgba(255,255,255,0.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="#hero" class="header-logo-wrap">
+                <img src="img/svg/logo.svg" alt="Будь Здоров" class="header-logo-img">
+            </a>
+            <nav class="nav">
+                <a href="#about">О нас</a>
+                <a href="#services">Услуги</a>
+                <a href="#gallery">Кухня</a>
+                <a href="#contacts">Контакты</a>
+                <a href="tel:+79612948885" class="nav-phone">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                    +7 (961) 294-88-85
+                </a>
+            </nav>
+            <div class="burger" id="burger" onclick="toggleMobileNav()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileNav()"></div>
+    <div class="mobile-nav" id="mobileNav">
+        <a href="#about" onclick="toggleMobileNav()">О нас</a>
+        <a href="#services" onclick="toggleMobileNav()">Услуги</a>
+        <a href="#gallery" onclick="toggleMobileNav()">Кухня</a>
+        <a href="#contacts" onclick="toggleMobileNav()">Контакты</a>
+        <a href="tel:+79612948885" class="mobile-nav-phone">+7 (961) 294-88-85</a>
+    </div>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <img src="img/svg/logo.svg" alt="Будь Здоров" class="hero-logo-img">
+            <p class="hero-subtitle">Комбинат питания с 1998 года</p>
+            <p class="hero-tagline">Здоровое питание &mdash; каждому человеку!</p>
+            <a href="#contacts" class="hero-cta">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                Забронировать
+            </a>
+        </div>
+        <!-- Brand swoosh — red/yellow arcs -->
+        <div class="hero-swoosh">
+            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="hero-swoosh-svg">
+                <path d="M0,120 L0,82 Q360,48 720,62 Q1080,80 1440,50 L1440,120 Z" fill="var(--cream)"/>
+                <path d="M0,80 Q360,46 720,60 Q1080,78 1440,48" fill="none" stroke="#CC0000" stroke-width="3.5" opacity="0.7"/>
+                <path d="M0,88 Q360,54 720,68 Q1080,86 1440,56" fill="none" stroke="#FFD600" stroke-width="2.5" opacity="0.6"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ========== BRAND ICONS STRIP ========== -->
+    <div class="brand-strip">
+        <img src="img/svg/leaf.svg" alt="Листок" class="brand-icon">
+        <img src="img/svg/chicken.svg" alt="Курица" class="brand-icon">
+        <img src="img/svg/crendel.svg" alt="Крендель" class="brand-icon">
+        <img src="img/svg/apple.svg" alt="Яблоко" class="brand-icon">
+        <img src="img/svg/cherry.svg" alt="Вишня" class="brand-icon">
+        <img src="img/svg/pear.svg" alt="Груша" class="brand-icon">
+        <img src="img/svg/beans.svg" alt="Горошек" class="brand-icon">
+    </div>
+
+    <!-- ========== ABOUT ========== -->
+    <section class="section about" id="about">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/apple.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">О нашем комбинате</h2>
+            <p class="section-lead fade-in">Традиции здорового питания с 5 мая 1998 года</p>
+            <div class="about-grid">
+                <div class="about-img fade-in">
+                    <img src="img/team-new.jpg" alt="Команда комбината питания Будь Здоров" loading="lazy">
+                </div>
+                <div class="about-text fade-in">
+                    <h3>Готовим с душой для вас</h3>
+                    <p>Комбинат питания «Будь Здоров» начал свой путь 5 мая 1998 года с небольшого цеха по приготовлению пищи. За эти годы мы выросли в современный комбинат питания площадью 2000 м², обслуживающий более 10 000 покупателей ежедневно.</p>
+                    <p>Наш девиз &mdash; «Здоровое питание &mdash; каждому человеку!» Мы гордимся нашей кухней: каждое блюдо готовится из свежих, натуральных продуктов по авторским и проверенным временем рецептам. Полный цикл производства гарантирует качество на каждом этапе.</p>
+                    <div class="about-features">
+                        <span class="about-feature">
+                            <img src="img/svg/apple.svg" alt="" width="22" height="22">
+                            С 1998 года
+                        </span>
+                        <span class="about-feature">
+                            <img src="img/svg/chicken.svg" alt="" width="22" height="22">
+                            10 000+ клиентов/день
+                        </span>
+                        <span class="about-feature">
+                            <img src="img/svg/pear.svg" alt="" width="22" height="22">
+                            2000 м² производства
+                        </span>
+                        <span class="about-feature">
+                            <img src="img/svg/crendel.svg" alt="" width="22" height="22">
+                            Полный цикл
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== SERVICES (NEW DESIGN) ========== -->
+    <section class="section services" id="services">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/pear.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">Наши услуги</h2>
+            <p class="section-lead fade-in">Организуем мероприятие любого формата &mdash; от семейного ужина до корпоративного банкета</p>
+            <div class="services-grid">
+
+                <div class="service-card fade-in d1">
+                    <div class="service-card-img">
+                        <img src="img/svc-banquet.jpg" alt="Банкеты и корпоративы" loading="lazy">
+                    </div>
+                    <div class="service-card-body">
+                        <h3 class="service-card-title">
+                            <img src="img/svg/crendel.svg" alt="" width="28" height="28">
+                            Банкеты и корпоративы
+                        </h3>
+                        <p>Организация корпоративных мероприятий любого масштаба. Индивидуальное меню, оформление зала, обслуживание на высшем уровне.</p>
+                    </div>
+                </div>
+
+                <div class="service-card fade-in d2">
+                    <div class="service-card-img">
+                        <img src="img/wedding-table.jpg" alt="Свадьбы и юбилеи" loading="lazy">
+                    </div>
+                    <div class="service-card-body">
+                        <h3 class="service-card-title">
+                            <img src="img/svg/cherry.svg" alt="" width="28" height="28">
+                            Свадьбы и юбилеи
+                        </h3>
+                        <p>Ваш праздник станет незабываемым! Праздничное оформление, персональное меню, внимание к каждой детали торжества.</p>
+                    </div>
+                </div>
+
+                <div class="service-card fade-in d3">
+                    <div class="service-card-img">
+                        <img src="img/svc-chef.jpg" alt="Поминальные обеды" loading="lazy">
+                    </div>
+                    <div class="service-card-body">
+                        <h3 class="service-card-title">
+                            <img src="img/svg/leaf.svg" alt="" width="28" height="28">
+                            Поминальные обеды
+                        </h3>
+                        <p>Деликатная организация поминальных мероприятий. Специальное меню, спокойная атмосфера, внимательное обслуживание.</p>
+                    </div>
+                </div>
+
+                <div class="service-card fade-in d4">
+                    <div class="service-card-img">
+                        <img src="img/svc-grill.jpg" alt="Летняя площадка и мангал" loading="lazy">
+                    </div>
+                    <div class="service-card-body">
+                        <h3 class="service-card-title">
+                            <img src="img/svg/chicken.svg" alt="" width="28" height="28">
+                            Летняя площадка и мангал
+                        </h3>
+                        <p>Открытая терраса для отдыха на свежем воздухе. Блюда на мангале, шашлыки, барбекю &mdash; идеально для тёплого сезона.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== DELIVERY ========== -->
+    <section class="section delivery" id="delivery">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/chicken.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">Всегда вовремя и вкусно</h2>
+        </div>
+        <div class="delivery-inner fade-in">
+            <div class="delivery-text">
+                <p>Мы предлагаем удобный сервис доставки готовых блюд и фуршетных наборов прямо к вашему столу. Кейтеринг для корпоративных мероприятий, праздников и деловых встреч.</p>
+                <div class="delivery-feature">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    Термобоксы для сохранения температуры
+                </div>
+                <div class="delivery-feature">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    Точно ко времени, без опозданий
+                </div>
+            </div>
+            <div class="delivery-img fade-in">
+                <img src="img/van-new.jpg" alt="Автомобиль доставки Будь Здоров" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== GALLERY ========== -->
+    <section class="section gallery" id="gallery">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/crendel.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">Наша кухня</h2>
+            <p class="section-lead fade-in">Каждое блюдо &mdash; маленький шедевр из натуральных продуктов</p>
+            <div class="gallery-grid">
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-steak.jpg" alt="Стейк с ягодным соусом" loading="lazy">
+                    <span class="gallery-caption">Стейк с ягодным соусом</span>
+                </div>
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-3.jpg" alt="Праздничная сервировка" loading="lazy">
+                    <span class="gallery-caption">Праздничная сервировка</span>
+                </div>
+                <div class="gallery-item tall fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-cake.jpg" alt="Свадебный торт" loading="lazy">
+                    <span class="gallery-caption">Свадебный торт</span>
+                </div>
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-soup.jpg" alt="Домашний суп" loading="lazy">
+                    <span class="gallery-caption">Домашний суп</span>
+                </div>
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-panacota.jpg" alt="Панна-котта" loading="lazy">
+                    <span class="gallery-caption">Панна-котта</span>
+                </div>
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-shashlik.jpg" alt="Шашлык на мангале" loading="lazy">
+                    <span class="gallery-caption">Шашлык на мангале</span>
+                </div>
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-2.jpg" alt="Свежий овощной салат" loading="lazy">
+                    <span class="gallery-caption">Свежий овощной салат</span>
+                </div>
+                <div class="gallery-item fade-in" onclick="openLightbox(this)">
+                    <img src="img/food-5.jpg" alt="Фаршированная рыба" loading="lazy">
+                    <span class="gallery-caption">Фаршированная рыба</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" aria-label="Закрыть">&times;</button>
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
+    <!-- ========== KITCHEN (SCALE) ========== -->
+    <section class="section kitchen" id="kitchen">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/beans.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">Профессиональный подход к каждому блюду</h2>
+            <div class="kitchen-grid">
+                <div class="kitchen-text fade-in">
+                    <p>Наша гордость &mdash; это современная кухня площадью 2000 м², оснащённая профессиональным оборудованием ведущих мировых производителей: KRONEN (Германия), RATIONAL (Германия), ROBOTCOUPE (Франция).</p>
+                    <p>Полный цикл производства позволяет нам контролировать качество на каждом этапе &mdash; от закупки свежих продуктов до подачи готового блюда. Наш рекорд &mdash; 1236 кг салата «Оливье», занесённый в Книгу рекордов Гиннесса!</p>
+                    <div class="kitchen-stat-grid">
+                        <div class="kitchen-stat">
+                            <h4>1998</h4>
+                            <span>Год основания</span>
+                        </div>
+                        <div class="kitchen-stat">
+                            <h4>10 000+</h4>
+                            <span>Покупателей в день</span>
+                        </div>
+                        <div class="kitchen-stat">
+                            <h4>2000 м²</h4>
+                            <span>Площадь производства</span>
+                        </div>
+                        <div class="kitchen-stat">
+                            <h4>1236 кг</h4>
+                            <span>Рекорд Гиннесса</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="kitchen-img fade-in">
+                    <img src="img/kitchen-new.jpg" alt="Профессиональная кухня комбината Будь Здоров" class="img-main" loading="lazy">
+                    <img src="img/kitchen2-new.jpg" alt="Оборудование кухни" class="img-sub" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== REVIEWS CAROUSEL ========== -->
+    <section class="section reviews" id="reviews">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/leaf.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">Отзывы наших гостей</h2>
+            <p class="section-lead fade-in">Мы ценим каждое мнение и стараемся быть лучше для вас</p>
+
+            <div class="reviews-slider-wrap fade-in">
+                <button class="reviews-arrow reviews-prev" onclick="moveReview(-1)" aria-label="Предыдущий отзыв">&lsaquo;</button>
+                <div style="overflow: hidden;">
+                    <div class="reviews-slider" id="reviewsSlider">
+                        <div class="review-card">
+                            <p class="review-text">Праздновали юбилей мужа. Очень понравилась кухня – всё по-домашнему вкусно, порции щедрые. Отдельное спасибо за фаршированную рыбу, гости были в восторге!</p>
+                            <span class="review-author">Елена Смирнова</span>
+                            <span class="review-event">Банкет на 30 человек</span>
+                        </div>
+                        <div class="review-card">
+                            <p class="review-text">Заказывали кейтеринг в офис на корпоратив. Привезли всё вовремя, горячее было горячим. Канапе разлетелись за 10 минут. Будем заказывать ещё!</p>
+                            <span class="review-author">Михаил, IT-компания</span>
+                            <span class="review-event">Корпоративный фуршет</span>
+                        </div>
+                        <div class="review-card">
+                            <p class="review-text">Уютное место с отличным сервисом. Летом часто бываем на летней площадке — шашлык просто бомба. Рекомендую всем, кто ищет вкусную еду по адекватным ценам.</p>
+                            <span class="review-author">Анна и Сергей</span>
+                            <span class="review-event">Постоянные гости</span>
+                        </div>
+                        <div class="review-card">
+                            <p class="review-text">Отмечали свадьбу в этом кафе. Столы ломились от угощений, официанты были очень внимательны. Нам даже разрешили принести свой алкоголь, что сильно помогло.</p>
+                            <span class="review-author">Семья Ивановых</span>
+                            <span class="review-event">Свадебный банкет</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="reviews-arrow reviews-next" onclick="moveReview(1)" aria-label="Следующий отзыв">&rsaquo;</button>
+
+                <div class="reviews-nav" id="reviewsDots"></div>
+
+                <!-- Yandex Reviews Rating Widget -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 3rem; flex-wrap: wrap;" class="fade-in">
+                    <iframe src="https://yandex.ru/sprav/widget/rating-badge/1027254303" width="150" height="50" frameborder="0" style="border:none;"></iframe>
+                    <a href="https://yandex.ru/maps/org/bud_zdorov/1027254303/reviews/?add-review=true" target="_blank" rel="noopener" class="hero-cta" style="padding: 12px 24px; font-size: 1rem; border-radius: 50px;">Оставить отзыв</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CONTACTS ========== -->
+    <section class="section contacts" id="contacts">
+        <div class="section-inner">
+            <div class="section-title-deco fade-in">
+                <span class="deco-line"></span>
+                <img src="img/svg/cherry.svg" class="deco-icon" alt="" width="28" height="28">
+                <span class="deco-line"></span>
+            </div>
+            <h2 class="section-title fade-in">Контакты</h2>
+            <p class="section-lead fade-in">Ждём вас в гости &mdash; забронируйте столик прямо сейчас!</p>
+            <div class="contacts-grid">
+                <div class="contacts-info fade-in">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <h4>Адрес</h4>
+                            <p>344093, г. Ростов-на-Дону, ул. Днепропетровская, 50&#171;И&#187;</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h4>Телефон</h4>
+                            <a href="tel:+79612948885">+7 (961) 294-88-85</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <h4>Время работы</h4>
+                            <p>Ежедневно с 10:00 до 22:00</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <a href="mailto:info@eda.bz">info@eda.bz</a>
+                        </div>
+                    </div>
+                    <a href="tel:+79612948885" class="contact-phone-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                        Позвонить нам
+                    </a>
+                </div>
+                <div class="contacts-map fade-in">
+                    <iframe src="https://yandex.ru/map-widget/v1/?ll=39.803266%2C47.287888&z=17&pt=39.803266%2C47.287888%2Cpm2rdl"
+                        width="100%" height="100%" frameborder="0" allowfullscreen loading="lazy"
+                        title="Комбинат питания Будь Здоров на карте"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER (NEW DESIGN) ========== -->
+    <!-- Mirrored hero swoosh — symmetric wave separator -->
+    <div class="footer-wave-top">
+        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="footer-swoosh-svg">
+            <path d="M0,120 L0,82 Q360,48 720,62 Q1080,80 1440,50 L1440,120 Z" fill="#2B2B2B"/>
+            <path d="M0,80 Q360,46 720,60 Q1080,78 1440,48" fill="none" stroke="#CC0000" stroke-width="3.5" opacity="0.7"/>
+            <path d="M0,88 Q360,54 720,68 Q1080,86 1440,56" fill="none" stroke="#FFD600" stroke-width="2.5" opacity="0.6"/>
+        </svg>
+    </div>
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <img src="img/svg/logo.svg" alt="Будь Здоров" class="footer-logo">
+                <p class="footer-motto">&#171;Здоровое питание &mdash; каждому человеку!&#187;</p>
+                <div class="footer-social">
+                    <a href="https://t.me/BudZdorov_Cafe" target="_blank" rel="noopener" aria-label="Telegram канал">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-contacts-col">
+                <h4>Контакты</h4>
+                <p>344093, г. Ростов-на-Дону</p>
+                <p>ул. Днепропетровская, 50&#171;И&#187;</p>
+                <a href="tel:+79612948885">+7 (961) 294-88-85</a>
+                <a href="mailto:info@eda.bz">info@eda.bz</a>
+                <a href="https://t.me/+79604555858" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.4rem;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7;flex-shrink:0;"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Написать для заказа
+                </a>
+            </div>
+            <div class="footer-contacts-col">
+                <h4>Время работы</h4>
+                <p>Ежедневно</p>
+                <p>с 10:00 до 22:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-inner">
+                <p class="footer-copy">&copy; 1998&ndash;2026 Комбинат питания &#171;Будь Здоров!&#187; Все права защищены.</p>
+                <a href="#hero" class="footer-back-top">
+                    Наверх
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        // Mobile nav
+        function toggleMobileNav() {
+            document.getElementById('mobileNav').classList.toggle('open');
+            document.getElementById('mobileOverlay').classList.toggle('active');
+            document.body.style.overflow =
+                document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
+        }
+
+        // Lightbox
+        function openLightbox(el) {
+            const img = el.querySelector('img');
+            document.getElementById('lightboxImg').src = img.src;
+            document.getElementById('lightboxImg').alt = img.alt;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+        // Fade-in on scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Reviews Carousel
+        let currentReview = 0;
+        const slider = document.getElementById('reviewsSlider');
+        const reviewSlides = document.querySelectorAll('.review-card');
+        const dotsContainer = document.getElementById('reviewsDots');
+
+        const getCardsPerView = () => window.innerWidth > 600 ? 2 : 1;
+        let maxIndex = Math.max(0, reviewSlides.length - getCardsPerView());
+
+        function generateDots() {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i <= maxIndex; i++) {
+                const dot = document.createElement('button');
+                dot.className = `reviews-dot ${i === 0 ? 'active' : ''}`;
+                dot.onclick = () => goToReview(i);
+                dot.setAttribute('aria-label', `Отзыв ${i + 1}`);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateReviews() {
+            if (!slider) return;
+            const cardsPerView = getCardsPerView();
+            maxIndex = Math.max(0, reviewSlides.length - cardsPerView);
+            if (currentReview > maxIndex) currentReview = maxIndex;
+
+            const shiftPercent = currentReview * (100 / cardsPerView);
+            const shiftRem = currentReview * 1;
+            slider.style.transform = `translateX(calc(-${shiftPercent}% - ${shiftRem}rem))`;
+
+            const reviewDots = document.querySelectorAll('.reviews-dot');
+            reviewDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentReview);
+            });
+        }
+
+        function moveReview(step) {
+            currentReview += step;
+            if (currentReview > maxIndex) currentReview = 0;
+            else if (currentReview < 0) currentReview = maxIndex;
+            updateReviews();
+            resetAutoPlay();
+        }
+
+        function goToReview(index) {
+            currentReview = index;
+            updateReviews();
+            resetAutoPlay();
+        }
+
+        let autoPlayInterval;
+        function resetAutoPlay() {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(() => moveReview(1), 5000);
+        }
+
+        generateDots();
+        updateReviews();
+        resetAutoPlay();
+        window.addEventListener('resize', () => {
+            generateDots();
+            updateReviews();
+        });
+    </script>
+</body>
+</html>

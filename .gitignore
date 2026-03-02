@@ -1,0 +1,10 @@
+venv/
+Promo/
+web_img/
+.DS_Store
+.agent/
+.claude/
+remove_bg.py
+inspect.html
+*.pyc
+__pycache__/
