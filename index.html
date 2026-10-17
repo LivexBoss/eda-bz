@@ -22,6 +22,12 @@
     <link rel="icon" href="img/app/favicon-32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="img/app/favicon-64.png" sizes="64x64" type="image/png">
     <link rel="apple-touch-icon" href="img/app/apple-touch-icon.png">
+    <!-- Мини-приложение (PWA / Telegram) -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Будь Здоров">
 
     <!-- Тема ставится до отрисовки, чтобы не было вспышки светлого фона -->
     <script>
@@ -45,6 +51,7 @@
           imagesizes="100vw" fetchpriority="high">
 
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/app.css">
 
     <script type="application/ld+json">
     {
@@ -628,5 +635,6 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
 </body>
 </html>

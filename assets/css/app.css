@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Будь Здоров — режим «мини-приложения» на телефоне
+   Подключается поверх main.css. Удаление этого файла и app.js
+   возвращает обычную мобильную версию сайта.
+   ========================================================================== */
+
+.tabbar { display: none; }
+
+@media (max-width: 760px) {
+    /* ---------- Нижняя панель вкладок ---------- */
+    .tabbar {
+        position: fixed; z-index: 950;
+        left: 10px; right: 10px;
+        bottom: calc(10px + env(safe-area-inset-bottom));
+        height: 66px;
+        display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
+        padding: 0 6px;
+        border-radius: 24px;
+        background: var(--glass);
+        background: color-mix(in srgb, var(--bg) 86%, transparent);
+        border: 1px solid var(--line);
+        box-shadow: 0 10px 30px -8px rgba(40, 20, 10, 0.3), 0 2px 6px rgba(40, 20, 10, 0.08);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+        animation: tabbarIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.2s backwards;
+        transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+    }
+    :root[data-theme="dark"] .tabbar { box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.6); }
+    body.menu-open .tabbar,
+    .tabbar.tabbar-hidden { transform: translateY(140%); opacity: 0; pointer-events: none; }
+
+    .tab {
+        position: relative;
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+        height: 100%;
+        color: var(--muted);
+        font-size: 10.5px; font-weight: 600; letter-spacing: 0.01em;
+        -webkit-user-select: none; user-select: none;
+        transition: color 0.25s;
+    }
+    .tab-ic {
+        display: grid; place-items: center;
+        width: 46px; height: 30px; border-radius: 999px;
+        transition: background-color 0.3s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .tab .ic { width: 22px; height: 22px; stroke-width: 2; }
+    .tab.active { color: var(--red); }
+    .tab.active .tab-ic { background: var(--red-soft); transform: translateY(-1px); }
+    .tab.active .tab-ic .ic { animation: tabPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .tab:active .tab-ic { transform: scale(0.86); }
+
+    .tab-call { color: var(--ink); }
+    .tab-call-btn {
+        position: relative;
+        display: grid; place-items: center;
+        width: 54px; height: 54px; margin-top: -30px; margin-bottom: 1px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #FF2A3D, var(--brand-red));
+        color: #fff;
+        box-shadow: 0 0 0 5px var(--bg), 0 10px 22px -6px rgba(227, 0, 22, 0.7);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .tab-call-btn::before {
+        content: ''; position: absolute; inset: 0; border-radius: 50%;
+        border: 2px solid var(--brand-red);
+        animation: callRing 2.4s ease-out 2.5s infinite;
+    }
+    .tab-call-btn .ic { width: 24px; height: 24px; animation: callShake 4s ease-in-out 3s infinite; }
+    .tab-call:active .tab-call-btn { transform: scale(0.9); }
+
+    /* место под панель */
+    .has-tabbar body { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
+    .has-tabbar .footer-bottom { padding-bottom: 18px; }
+    .has-tabbar .to-top { display: none; }
+    .has-tabbar .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+    .has-tabbar .hero { padding-bottom: 150px; }
+
+    /* ---------- Ощущение приложения ---------- */
+    .btn, .tab, .g-item, .service-card, .feature, .icon-btn, .round-btn, .mobile-menu-links a {
+        -webkit-touch-callout: none;
+    }
+    .g-item:active img { transform: scale(0.97); transition-duration: 0.15s; }
+    .service-card:active { transform: scale(0.98); transition: transform 0.15s; }
+    .feature:active, .contact-list li:active { transform: scale(0.98); transition: transform 0.15s; }
+
+    /* в меню-шторке без телефона в шапке — компактнее */
+    .mobile-menu-panel { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- Установка на экран «Домой» ---------- */
+.install-hint {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px; border-radius: 16px;
+    background: var(--surface-2); color: var(--muted);
+    font-size: 0.82rem; line-height: 1.4;
+}
+.install-hint .ic { width: 20px; height: 20px; color: #0A84FF; flex-shrink: 0; }
+.install-btn .ic { width: 20px; height: 20px; }
+
+/* ---------- Запуск с экрана «Домой» ---------- */
+.is-standalone body { -webkit-user-select: none; user-select: none; }
+.is-standalone p, .is-standalone blockquote, .is-standalone .contact-body { -webkit-user-select: text; user-select: text; }
+
+/* ---------- Внутри Telegram ---------- */
+.tg-app .header-phone { display: none; }
+.tg-app .header { padding-top: 10px; }
+
+@keyframes tabbarIn { from { transform: translateY(140%); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes tabPop { 0% { transform: scale(0.7); } 100% { transform: scale(1); } }
+@keyframes callRing { 0% { transform: scale(1); opacity: 0.8; } 70%, 100% { transform: scale(1.55); opacity: 0; } }
+@keyframes callShake {
+    0%, 86%, 100% { transform: rotate(0); }
+    88% { transform: rotate(-14deg); } 90% { transform: rotate(12deg); }
+    92% { transform: rotate(-10deg); } 94% { transform: rotate(8deg); } 96% { transform: rotate(-4deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabbar { animation: none; }
+    .tab-call-btn::before, .tab-call-btn .ic { animation: none; }
+}
