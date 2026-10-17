@@ -1,1259 +1,640 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Комбинат питания «Будь Здоров» — Домашняя кухня в Ростове-на-Дону | eda.bz</title>
     <meta name="description" content="Комбинат питания «Будь Здоров» — здоровое питание каждому человеку с 1998 года. Банкеты, свадьбы, юбилеи, поминальные обеды, корпоративы. Летняя площадка с мангалом.">
+    <meta name="theme-color" content="#FFFDF9" id="metaThemeColor">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="canonical" href="https://eda.bz/">
+
     <meta property="og:title" content="Комбинат питания «Будь Здоров» — Домашняя кухня в Ростове-на-Дону">
     <meta property="og:description" content="Здоровое питание каждому человеку с 1998 года. Банкеты, свадьбы, корпоративы, летняя площадка.">
-    <meta property="og:image" content="img/hero-buffet.jpg">
+    <meta property="og:image" content="https://eda.bz/img/app/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://eda.bz">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <link rel="icon" href="img/app/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="img/app/favicon-64.png" sizes="64x64" type="image/png">
+    <link rel="apple-touch-icon" href="img/app/apple-touch-icon.png">
+    <!-- Мини-приложение (PWA / Telegram) -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Будь Здоров">
+
+    <!-- Тема ставится до отрисовки, чтобы не было вспышки светлого фона -->
+    <script>
+        (function () {
+            var t;
+            try { t = localStorage.getItem('theme'); } catch (e) {}
+            if (t !== 'light' && t !== 'dark') {
+                t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            document.documentElement.dataset.theme = t;
+            document.documentElement.classList.add('js');
+        })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/PFAgoraSerifPro-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" as="image" href="img/webp/hero-buffet-1280.webp"
+          imagesrcset="img/webp/hero-buffet-800.webp 800w, img/webp/hero-buffet-1280.webp 1280w, img/webp/hero-buffet.webp 1920w"
+          imagesizes="100vw" fetchpriority="high">
 
-    <style>
-        @font-face {
-            font-family: 'PF Agora Serif Pro';
-            src: url('fonts/PFAgoraSerifPro-Regular.ttf') format('truetype');
-            font-weight: 400; font-style: normal; font-display: swap;
-        }
-        @font-face {
-            font-family: 'PF Agora Serif Pro';
-            src: url('fonts/PFAgoraSerifPro-Bold.ttf') format('truetype');
-            font-weight: 700; font-style: normal; font-display: swap;
-        }
-        @font-face {
-            font-family: 'PF Agora Serif Pro';
-            src: url('fonts/PFAgoraSerifPro-Italic.ttf') format('truetype');
-            font-weight: 400; font-style: italic; font-display: swap;
-        }
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/app.css">
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --red: #CC0000;
-            --red-dark: #A00000;
-            --red-light: #E53935;
-            --yellow: #F9A825;
-            --yellow-light: #FFD600;
-            --green: #4CAF50;
-            --green-dark: #2E7D32;
-            --white: #FFFFFF;
-            --cream: #FFFAF5;
-            --cream-dark: #FFF3E8;
-            --gray-light: #F5F5F5;
-            --gray: #757575;
-            --gray-dark: #333333;
-            --font-heading: 'PF Agora Serif Pro', Georgia, 'Times New Roman', serif;
-            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        html { scroll-behavior: smooth; font-size: 16px; }
-
-        body {
-            font-family: var(--font-body);
-            color: var(--gray-dark);
-            line-height: 1.6;
-            background: var(--white);
-            overflow-x: hidden;
-        }
-
-        img { max-width: 100%; height: auto; display: block; }
-        a { text-decoration: none; color: inherit; }
-
-        /* ========== HEADER ========== */
-        .header {
-            position: fixed; top: 0; left: 0; right: 0;
-            z-index: 1000; padding: 0.6rem 1.5rem;
-            transition: background 0.3s, box-shadow 0.3s, padding 0.3s;
-        }
-        .header.scrolled {
-            background: rgba(255,255,255,0.97);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-            padding: 0.4rem 1.5rem;
-        }
-        .header-inner {
-            max-width: 1200px; margin: 0 auto;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .header-logo-wrap { display: flex; align-items: center; gap: 0.5rem; }
-        .header-logo-img { height: 52px; width: auto; }
-        .nav { display: flex; gap: 1.5rem; align-items: center; }
-        .nav a {
-            font-size: 0.9rem; font-weight: 500; color: var(--white);
-            transition: color 0.3s; position: relative;
-        }
-        .nav a::after {
-            content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-            height: 2px; background: var(--yellow); transform: scaleX(0);
-            transition: transform 0.3s; border-radius: 1px;
-        }
-        .nav a:hover::after { transform: scaleX(1); }
-        .header.scrolled .nav a { color: var(--gray-dark); }
-        .header.scrolled .nav a:hover { color: var(--red); }
-        .header.scrolled .nav a:hover::after { background: var(--red); }
-        .nav-phone {
-            display: flex; align-items: center; gap: 0.4rem; font-weight: 600;
-            background: var(--red); color: var(--white) !important;
-            padding: 0.5rem 1.2rem; border-radius: 50px;
-            transition: background 0.3s, transform 0.2s;
-        }
-        .nav-phone::after { display: none !important; }
-        .nav-phone:hover { background: var(--red-dark) !important; transform: scale(1.03); }
-        .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 5px; }
-        .burger span { width: 26px; height: 3px; background: var(--white); border-radius: 3px; transition: all 0.3s; }
-        .header.scrolled .burger span { background: var(--gray-dark); }
-
-        /* ========== HERO ========== */
-        .hero {
-            position: relative; min-height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            text-align: center; overflow: hidden;
-        }
-        .hero-bg {
-            position: absolute; inset: 0;
-            background: url('img/hero-buffet.jpg') center/cover no-repeat;
-            z-index: -2;
-        }
-        .hero-overlay {
-            position: absolute; inset: 0; z-index: -1;
-            background: linear-gradient(
-                to bottom,
-                rgba(0,0,0,0.4) 0%,
-                rgba(0,0,0,0.15) 40%,
-                rgba(0,0,0,0.25) 70%,
-                rgba(0,0,0,0.6) 100%
-            );
-        }
-        .hero-content {
-            padding: 2rem 1.5rem; max-width: 850px;
-            animation: fadeInUp 1s ease-out;
-        }
-        .hero-logo-img {
-            width: min(420px, 80vw); height: auto; margin: 0 auto 1.5rem;
-            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.6));
-        }
-        .hero-subtitle {
-            font-family: var(--font-heading);
-            font-size: clamp(1.3rem, 3.5vw, 2rem);
-            color: var(--white); margin-bottom: 0.5rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-        }
-        .hero-tagline {
-            font-size: clamp(0.95rem, 2vw, 1.15rem);
-            color: rgba(255,255,255,0.9); margin-bottom: 2.5rem;
-            text-shadow: 0 1px 5px rgba(0,0,0,0.3);
-            font-style: italic;
-        }
-        .hero-cta {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 1rem 2.5rem; background: var(--yellow);
-            color: var(--gray-dark); font-size: 1.1rem; font-weight: 700;
-            border-radius: 50px; transition: all 0.3s;
-            box-shadow: 0 4px 20px rgba(249,168,37,0.5);
-        }
-        .hero-cta:hover {
-            background: var(--yellow-light); transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(249,168,37,0.6);
-        }
-
-        /* Brand swoosh decoration at hero bottom */
-        .hero-swoosh {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            z-index: 1;
-        }
-        .hero-swoosh-svg { width: 100%; height: auto; display: block; }
-
-        /* ========== BRAND ICONS STRIP ========== */
-        .brand-strip {
-            background: var(--cream);
-            padding: 1.5rem 1rem;
-            display: flex; justify-content: center; align-items: center;
-            gap: clamp(0.5rem, 2.5vw, 2.5rem);
-            flex-wrap: nowrap;
-            position: relative; z-index: 2;
-        }
-        .brand-icon {
-            height: clamp(28px, 5.5vw, 56px); width: auto; max-height: 52px; padding: 2px;
-            opacity: 0.9; transition: transform 0.3s, opacity 0.3s;
-            object-fit: contain; flex-shrink: 1; min-width: 0;
-        }
-        .brand-icon:hover { transform: scale(1.15); opacity: 1; }
-
-        /* ========== SECTIONS COMMON ========== */
-        .section { padding: 5rem 1.5rem; position: relative; }
-        .section-inner { max-width: 1100px; margin: 0 auto; }
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: clamp(1.8rem, 4vw, 2.6rem);
-            color: var(--red); text-align: center; margin-bottom: 1rem;
-        }
-        .section-title-deco {
-            display: flex; align-items: center; justify-content: center; gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        .section-title-deco .deco-line {
-            width: 60px; height: 2px; background: var(--yellow); border-radius: 1px;
-        }
-        .section-title-deco .deco-icon { width: 34px; height: 34px; object-fit: contain; padding: 3px; }
-        .section-lead {
-            text-align: center; color: var(--gray); font-size: 1.05rem;
-            max-width: 650px; margin: 0 auto 3rem; line-height: 1.7;
-        }
-
-        /* ========== ABOUT ========== */
-        .about { background: var(--cream); }
-        .about-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 3rem; align-items: center;
-        }
-        .about-img {
-            border-radius: 16px; overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-            position: relative;
-        }
-        .about-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .about-img:hover img { transform: scale(1.03); }
-        .about-img::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--red), var(--yellow), var(--red));
-            border-radius: 0 0 16px 16px;
-        }
-        .about-text h3 {
-            font-family: var(--font-heading); font-size: 1.6rem;
-            color: var(--red); margin-bottom: 1rem;
-        }
-        .about-text p { margin-bottom: 1rem; color: var(--gray-dark); line-height: 1.8; }
-        .about-features {
-            display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem;
-        }
-        .about-feature {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: var(--white); padding: 0.6rem 1.1rem; border-radius: 50px;
-            font-size: 0.9rem; font-weight: 500; color: var(--gray-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border-left: 3px solid var(--red);
-        }
-        .about-feature img { flex-shrink: 0; object-fit: contain; }
-
-        /* ========== SERVICES (NEW DESIGN) ========== */
-        .services { background: var(--white); }
-        .services-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;
-        }
-        .service-card {
-            border-radius: 16px; overflow: hidden; position: relative;
-            background: var(--white);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: default;
-        }
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 16px 50px rgba(0,0,0,0.15);
-        }
-        .service-card-img {
-            height: 220px; overflow: hidden;
-            position: relative;
-        }
-        .service-card-img img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .service-card:hover .service-card-img img {
-            transform: scale(1.06);
-        }
-        /* Subtle gradient at bottom of photo for smooth transition */
-        .service-card-img::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 40px;
-            background: linear-gradient(to top, var(--cream), transparent);
-            pointer-events: none;
-        }
-        .service-card-body {
-            padding: 1.5rem 1.5rem 1.8rem;
-            background: var(--cream);
-        }
-        .service-card-title {
-            font-family: var(--font-heading); font-size: 1.3rem;
-            color: var(--gray-dark); margin-bottom: 0.6rem;
-            display: flex; align-items: center; gap: 0.6rem;
-        }
-        .service-card-title img {
-            width: 30px; height: 30px; object-fit: contain; flex-shrink: 0;
-        }
-        .service-card-body p {
-            font-size: 0.93rem; color: var(--gray); line-height: 1.7;
-        }
-        /* Yellow accent bar at bottom */
-        .service-card::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-            height: 4px; background: var(--yellow); z-index: 3;
-            border-radius: 0 0 16px 16px;
-        }
-
-        /* ========== DELIVERY ========== */
-        .delivery { background: var(--gray-light); }
-        .delivery-inner {
-            display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto;
-        }
-        .delivery-img { border-radius: 16px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.15); align-self: flex-end; }
-        .delivery-img img { width: 100%; height: auto; display: block; }
-        /* delivery-text h2 removed — title is now .section-title above grid */
-        .delivery-text p { color: var(--gray-dark); margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.05rem; }
-        .delivery-feature { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; font-weight: 500; }
-        .delivery-feature svg { color: var(--yellow); flex-shrink: 0; }
-
-        /* ========== KITCHEN (SCALE) ========== */
-        .kitchen { background: var(--white); }
-        .kitchen-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 1100px; margin: 0 auto;
-        }
-        .kitchen-img { border-radius: 16px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 1rem; align-self: flex-end; }
-        .kitchen-img img { width: 100%; height: auto; object-fit: cover; }
-        .kitchen-img .img-main { aspect-ratio: 16/9; }
-        .kitchen-img .img-sub { aspect-ratio: 21/9; }
-        /* kitchen-text h2 removed — title is now .section-title above grid */
-        .kitchen-text p { color: var(--gray-dark); margin-bottom: 1.2rem; line-height: 1.8; font-size: 1.05rem; }
-        .kitchen-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
-        .kitchen-stat { background: var(--cream); padding: 1.2rem; border-radius: 12px; border-left: 4px solid var(--yellow); }
-        .kitchen-stat h4 { font-size: 1.8rem; color: var(--red); font-family: var(--font-heading); margin-bottom: 0.2rem; line-height: 1; }
-        .kitchen-stat span { font-size: 0.85rem; color: var(--gray-dark); font-weight: 500; }
-
-        /* ========== REVIEWS CAROUSEL ========== */
-        .reviews { background: var(--white); overflow: hidden; }
-        .reviews-slider-wrap { max-width: 1100px; margin: 0 auto; position: relative; padding: 0 3rem; }
-        .reviews-slider { display: flex; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); gap: 2rem; }
-        .review-card {
-            flex: 0 0 calc(50% - 1rem); box-sizing: border-box;
-            padding: 2.5rem; text-align: left;
-            border: 2px solid var(--gray-light); border-radius: 12px;
-            background: var(--white);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .review-card:hover { border-color: rgba(204,0,0,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .review-text { font-size: 1.05rem; font-style: italic; color: var(--gray-dark); margin-bottom: 1.5rem; line-height: 1.7; position: relative; }
-        .review-text::before {
-            content: '\00AB'; position: absolute; top: -1rem; left: -1rem;
-            font-size: 3rem; color: rgba(204,0,0,0.1); font-family: var(--font-heading);
-            line-height: 1;
-        }
-        .review-author { font-weight: 700; color: var(--red); font-size: 1.05rem; display: block;}
-        .review-event { font-size: 0.9rem; color: var(--gray); display: block; margin-top: 0.2rem; }
-        .reviews-nav { display: flex; justify-content: center; gap: 0.5rem; margin-top: 2.5rem; }
-        .reviews-dot { width: 12px; height: 12px; border-radius: 50%; background: #eee; border: none; cursor: pointer; transition: background 0.3s; padding: 0;}
-        .reviews-dot.active { background: var(--red); }
-        .reviews-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 2.5rem; color: var(--gray); cursor: pointer; transition: color 0.3s; padding: 10px; z-index: 10;}
-        .reviews-arrow:hover { color: var(--red); }
-        .reviews-prev { left: -10px; }
-        .reviews-next { right: -10px; }
-
-        /* ========== FOOD GALLERY ========== */
-        .gallery { background: var(--cream); }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 250px;
-            gap: 1rem;
-        }
-        .gallery-item {
-            border-radius: 14px; overflow: hidden;
-            cursor: pointer; position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        .gallery-item.tall { grid-row: span 2; }
-        .gallery-item.wide { grid-column: span 2; }
-        .gallery-item img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s;
-        }
-        .gallery-item:hover img { transform: scale(1.08); }
-        .gallery-item::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .gallery-item:hover::after { opacity: 1; }
-        .gallery-caption {
-            position: absolute; bottom: 0.75rem; left: 1rem;
-            color: white; font-weight: 600; font-size: 0.9rem;
-            z-index: 2; opacity: 0; transform: translateY(10px);
-            transition: all 0.3s;
-        }
-        .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0); }
-
-        /* ========== LIGHTBOX ========== */
-        .lightbox {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.92);
-            z-index: 2000; display: none; align-items: center;
-            justify-content: center; padding: 2rem; cursor: pointer;
-        }
-        .lightbox.active { display: flex; }
-        .lightbox img {
-            max-width: 90%; max-height: 85vh; border-radius: 8px;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-        }
-        .lightbox-close {
-            position: absolute; top: 1.5rem; right: 1.5rem;
-            width: 44px; height: 44px; background: rgba(255,255,255,0.15);
-            border: none; border-radius: 50%; color: white; font-size: 1.5rem;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            transition: background 0.3s;
-        }
-        .lightbox-close:hover { background: rgba(255,255,255,0.3); }
-
-        /* ========== CONTACTS ========== */
-        .contacts { background: var(--white); }
-        .contacts-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 2.5rem; align-items: start;
-        }
-        .contacts-info { display: flex; flex-direction: column; gap: 1.5rem; }
-        .contact-item { display: flex; align-items: flex-start; gap: 1rem; }
-        .contact-icon {
-            flex-shrink: 0; width: 48px; height: 48px;
-            background: linear-gradient(135deg, var(--red), var(--red-light));
-            border-radius: 12px; display: flex; align-items: center;
-            justify-content: center; color: white;
-        }
-        .contact-item h4 {
-            font-size: 0.8rem; color: var(--gray); text-transform: uppercase;
-            letter-spacing: 0.06em; margin-bottom: 0.2rem; font-weight: 500;
-        }
-        .contact-item p, .contact-item a {
-            font-size: 1.05rem; color: var(--gray-dark); font-weight: 500;
-        }
-        .contact-item a:hover { color: var(--red); }
-        .contact-phone-link {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: var(--red); color: var(--white) !important;
-            padding: 0.9rem 2.2rem; border-radius: 50px;
-            font-size: 1.15rem; font-weight: 700; transition: all 0.3s;
-            margin-top: 0.5rem;
-            box-shadow: 0 4px 18px rgba(204,0,0,0.3);
-        }
-        .contact-phone-link:hover {
-            background: var(--red-dark); transform: translateY(-2px);
-            color: var(--white) !important;
-            box-shadow: 0 8px 25px rgba(204,0,0,0.4);
-        }
-        .contacts-map {
-            border-radius: 16px; overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1); aspect-ratio: 4/3;
-        }
-        .contacts-map iframe { width: 100%; height: 100%; border: 0; }
-
-        /* ========== FOOTER (NEW DESIGN) ========== */
-        .footer {
-            background: #2B2B2B; color: rgba(255,255,255,0.7);
-            padding: 0; position: relative; overflow: hidden;
-        }
-        /* Mirrored hero swoosh at footer top */
-        .footer-wave-top {
-            position: relative; z-index: 2; margin-top: -1px;
-        }
-        .footer-swoosh-svg { display: block; width: 100%; height: auto; }
-        .footer-main {
-            max-width: 1100px; margin: 0 auto;
-            padding: 3.5rem 1.5rem 2.5rem;
-            display: grid; grid-template-columns: 1.2fr 1fr 0.8fr;
-            gap: 2.5rem;
-            position: relative; z-index: 1;
-        }
-        .footer-brand {
-            display: flex; flex-direction: column; gap: 1rem;
-            align-items: flex-start;
-        }
-        .footer-logo { height: 48px; width: auto; opacity: 0.95; }
-        .footer-motto {
-            font-family: var(--font-heading); font-style: italic;
-            font-size: 1rem; color: rgba(255,255,255,0.55);
-            max-width: 280px; line-height: 1.6;
-        }
-        .footer-social {
-            display: flex; gap: 0.8rem; margin-top: 0.5rem;
-        }
-        .footer-social a {
-            width: 38px; height: 38px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            color: rgba(255,255,255,0.5);
-            transition: background 0.3s, color 0.3s, transform 0.2s;
-        }
-        .footer-social a:hover {
-            background: var(--red); color: var(--white);
-            transform: translateY(-2px);
-        }
-        .footer-contacts-col h4 {
-            font-family: var(--font-heading);
-            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em;
-            color: var(--yellow); margin-bottom: 0.8rem; font-weight: 700;
-        }
-        .footer-contacts-col p,
-        .footer-contacts-col a {
-            display: block; font-size: 0.93rem; color: rgba(255,255,255,0.65);
-            line-height: 1.9; transition: color 0.3s;
-        }
-        .footer-contacts-col a:hover { color: var(--yellow); }
-        .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding: 1.2rem 1.5rem;
-            position: relative; z-index: 1;
-        }
-        .footer-bottom-inner {
-            max-width: 1100px; margin: 0 auto;
-            display: flex; align-items: center; justify-content: space-between;
-            flex-wrap: wrap; gap: 0.5rem;
-        }
-        .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
-        .footer-back-top {
-            font-size: 0.85rem; color: rgba(255,255,255,0.45);
-            transition: color 0.3s, transform 0.2s;
-            display: flex; align-items: center; gap: 0.4rem;
-        }
-        .footer-back-top:hover { color: var(--yellow); transform: translateY(-2px); }
-
-        /* ========== ANIMATIONS ========== */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            opacity: 0; transform: translateY(20px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-        .fade-in.d1 { transition-delay: 0.1s; }
-        .fade-in.d2 { transition-delay: 0.2s; }
-        .fade-in.d3 { transition-delay: 0.3s; }
-        .fade-in.d4 { transition-delay: 0.4s; }
-
-        /* ========== MOBILE NAV ========== */
-        .mobile-nav {
-            position: fixed; top: 0; right: -300px; width: 280px;
-            height: 100vh; background: var(--white); z-index: 1100;
-            padding: 5rem 2rem 2rem; transition: right 0.35s ease;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.2);
-        }
-        .mobile-nav.open { right: 0; }
-        .mobile-nav a {
-            display: block; padding: 0.8rem 0; font-size: 1.1rem;
-            font-weight: 500; color: var(--gray-dark);
-            border-bottom: 1px solid var(--gray-light);
-        }
-        .mobile-nav a:hover { color: var(--red); }
-        .mobile-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
-            z-index: 1050; display: none;
-        }
-        .mobile-overlay.active { display: block; }
-        .mobile-nav-phone { color: var(--red); font-weight: 700; border: none; margin-top: 1rem; }
-
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 900px) {
-            .nav { display: none; }
-            .burger { display: flex; }
-            .about-grid, .contacts-grid, .kitchen-grid { grid-template-columns: 1fr; }
-            .delivery-inner { grid-template-columns: 1fr; gap: 2rem; }
-            .about-img { max-height: 350px; }
-            .services-grid { grid-template-columns: 1fr; }
-            .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
-            .gallery-item.wide { grid-column: span 1; }
-            .gallery-item.tall { grid-row: span 1; }
-            .footer-main { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
-            .footer-brand { align-items: center; }
-            .footer-motto { max-width: 100%; }
-            .footer-social { justify-content: center; }
-            .footer-bottom-inner { justify-content: center; text-align: center; flex-direction: column; }
-        }
-        @media (max-width: 600px) {
-            .section { padding: 3.5rem 1rem; }
-            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-            .hero-cta { padding: 0.85rem 2rem; font-size: 1rem; }
-            .service-card-img { height: 180px; }
-            .service-card-body { padding: 1.2rem; }
-            .service-card-title { font-size: 1.15rem; }
-            .reviews-slider-wrap { padding: 0 1rem; }
-            .reviews-arrow { display: none; }
-            .review-card { flex: 0 0 100%; padding: 1.5rem; }
-            .kitchen-stat-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* ========== DARK THEME ========== */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --white: #1a1a1a;
-                --cream: #222222;
-                --cream-dark: #2a2a2a;
-                --gray-light: #2d2d2d;
-                --gray: #AAAAAA;
-                --gray-dark: #E8E8E8;
-                --red: #EF4444;
-                --red-dark: #DC2626;
-                --red-light: #F87171;
-            }
-            body { background: #1a1a1a; color: #E8E8E8; }
-
-            /* ---- FIX: elements that need true white (not dark-mode --white) ---- */
-            .nav a { color: #FFFFFF; }
-            .nav-phone { color: #FFFFFF !important; }
-            .hero-subtitle { color: #FFFFFF; }
-            .hero-tagline { color: rgba(255,255,255,0.9); }
-            .hero-cta { color: #333333; background: var(--yellow); }
-            .burger span { background: #FFFFFF; }
-            .contact-phone-link { color: #FFFFFF !important; }
-
-            /* ---- Header scrolled ---- */
-            .header.scrolled {
-                background: rgba(26,26,26,0.97);
-                box-shadow: 0 2px 20px rgba(0,0,0,0.4);
-            }
-            .header.scrolled .nav a { color: #E8E8E8; }
-            .header.scrolled .nav a:hover { color: var(--yellow); }
-            .header.scrolled .nav a:hover::after { background: var(--yellow); }
-            .header.scrolled .burger span { background: #E8E8E8; }
-
-            /* ---- Hero swoosh ---- */
-            .hero-swoosh-svg path:first-child { fill: #222222; }
-
-            /* ---- Brand strip ---- */
-            .brand-strip { background: #222222; }
-            .brand-icon { opacity: 0.85; }
-
-            /* ---- Section titles — bright enough red via variable ---- */
-            .section-title { color: var(--red); }
-            .section-lead { color: #BBBBBB; }
-
-            /* ---- About section ---- */
-            .about-text h3 { color: var(--red); }
-            .about-feature { border-left-color: var(--red); }
-
-            /* ---- Service cards ---- */
-            .service-card-img::after {
-                background: linear-gradient(to top, #222222, transparent);
-            }
-            .service-card-body p { color: #BBBBBB; }
-
-            /* ---- Delivery ---- */
-            .delivery-text p { color: #CCCCCC; }
-            .delivery-feature { color: #E8E8E8; }
-
-            /* ---- Kitchen ---- */
-            .kitchen-text p { color: #CCCCCC; }
-            .kitchen-stat { border-left-color: var(--yellow); }
-            .kitchen-stat h4 { color: var(--red); }
-
-            /* ---- Reviews ---- */
-            .reviews-dot { background: #444; }
-            .review-text { color: #D4D4D4; }
-            .review-text::before { color: rgba(239,68,68,0.15); }
-            .review-author { color: var(--red); }
-            .review-event { color: #AAAAAA; }
-            .review-card { border-color: #3a3a3a; }
-            .review-card:hover { border-color: rgba(239,68,68,0.3); }
-
-            /* ---- Gallery ---- */
-            .gallery-item { box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-
-            /* ---- Contacts ---- */
-            .contact-item h4 { color: #AAAAAA; }
-            .contact-item p, .contact-item a { color: #E8E8E8; }
-            .contacts-map { box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
-
-            /* ---- Mobile nav ---- */
-            .mobile-nav {
-                background: #2d2d2d;
-                box-shadow: -5px 0 30px rgba(0,0,0,0.5);
-            }
-            .mobile-nav a {
-                color: #E8E8E8;
-                border-bottom-color: #444;
-            }
-            .mobile-nav a:hover { color: var(--yellow); }
-            .mobile-nav-phone { color: var(--red) !important; }
-
-            /* ---- Footer ---- */
-            .footer-swoosh-svg path:first-child { fill: #2B2B2B; }
-            .footer-contacts-col h4 { color: var(--yellow); }
-
-            /* ---- Lightbox ---- */
-            .lightbox-close { background: rgba(255,255,255,0.2); }
-        }
-    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Комбинат питания «Будь Здоров»",
+        "url": "https://eda.bz",
+        "image": "https://eda.bz/img/app/og-image.jpg",
+        "logo": "https://eda.bz/img/app/icon-512.png",
+        "telephone": "+7 961 294-88-85",
+        "email": "info@eda.bz",
+        "foundingDate": "1998-05-05",
+        "servesCuisine": "Домашняя кухня",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ул. Днепропетровская, 50И",
+            "addressLocality": "Ростов-на-Дону",
+            "postalCode": "344093",
+            "addressCountry": "RU"
+        },
+        "geo": { "@type": "GeoCoordinates", "latitude": 47.287888, "longitude": 39.803266 },
+        "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+            "opens": "10:00",
+            "closes": "22:00"
+        }],
+        "sameAs": ["https://t.me/BudZdorov_Cafe"]
+    }
+    </script>
 </head>
 <body>
 
+    <!-- ========== ICON SPRITE ========== -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+            <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+            <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+            <symbol id="i-chevron-up" viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></symbol>
+            <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+            <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+            <symbol id="i-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+            <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+            <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+            <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+            <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+            <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
+            <symbol id="i-quote" viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></symbol>
+            <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol>
+            <symbol id="i-timer" viewBox="0 0 24 24"><path d="M10 2h4M12 14l3-3"/><circle cx="12" cy="14" r="8"/></symbol>
+            <symbol id="i-route" viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></symbol>
+            <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+            <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+            <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+            <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
+            <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+            <symbol id="i-telegram" viewBox="0 0 24 24"><path stroke="none" fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></symbol>
+        </defs>
+    </svg>
+
+    <a class="skip-link" href="#about">Перейти к содержимому</a>
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+
     <!-- ========== HEADER ========== -->
     <header class="header" id="header">
-        <div class="header-inner">
-            <a href="#hero" class="header-logo-wrap">
-                <img src="img/svg/logo.svg" alt="Будь Здоров" class="header-logo-img">
+        <div class="header-bar">
+            <a href="#hero" class="header-logo" aria-label="Будь Здоров — на главную">
+                <img src="img/svg/logo.svg" alt="Будь Здоров" width="110" height="55">
             </a>
-            <nav class="nav">
+            <nav class="nav" id="nav" aria-label="Основное меню">
+                <span class="nav-indicator" aria-hidden="true"></span>
                 <a href="#about">О нас</a>
                 <a href="#services">Услуги</a>
+                <a href="#delivery">Доставка</a>
                 <a href="#gallery">Кухня</a>
+                <a href="#reviews">Отзывы</a>
                 <a href="#contacts">Контакты</a>
-                <a href="tel:+79612948885" class="nav-phone">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                    +7 (961) 294-88-85
-                </a>
             </nav>
-            <div class="burger" id="burger" onclick="toggleMobileNav()">
-                <span></span><span></span><span></span>
+            <div class="header-actions">
+                <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Переключить тему">
+                    <svg class="ic ic-sun"><use href="#i-sun"/></svg>
+                    <svg class="ic ic-moon"><use href="#i-moon"/></svg>
+                </button>
+                <a href="tel:+79612948885" class="btn btn-red btn-sm header-phone">
+                    <svg class="ic"><use href="#i-phone"/></svg>
+                    <span>+7 (961) 294-88-85</span>
+                </a>
+                <button class="icon-btn burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu">
+                    <svg class="ic"><use href="#i-menu"/></svg>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- MOBILE NAV -->
-    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileNav()"></div>
-    <div class="mobile-nav" id="mobileNav">
-        <a href="#about" onclick="toggleMobileNav()">О нас</a>
-        <a href="#services" onclick="toggleMobileNav()">Услуги</a>
-        <a href="#gallery" onclick="toggleMobileNav()">Кухня</a>
-        <a href="#contacts" onclick="toggleMobileNav()">Контакты</a>
-        <a href="tel:+79612948885" class="mobile-nav-phone">+7 (961) 294-88-85</a>
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+        <div class="mobile-menu-backdrop" data-close-menu></div>
+        <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Меню">
+            <div class="mobile-menu-head">
+                <img src="img/svg/logo.svg" alt="Будь Здоров" width="96" height="48">
+                <button class="icon-btn" type="button" data-close-menu aria-label="Закрыть меню">
+                    <svg class="ic"><use href="#i-x"/></svg>
+                </button>
+            </div>
+            <nav class="mobile-menu-links">
+                <a href="#about" data-close-menu><img src="img/svg/apple.svg" alt="">О нас</a>
+                <a href="#services" data-close-menu><img src="img/svg/pear.svg" alt="">Услуги</a>
+                <a href="#delivery" data-close-menu><img src="img/svg/chicken.svg" alt="">Доставка</a>
+                <a href="#gallery" data-close-menu><img src="img/svg/crendel.svg" alt="">Наша кухня</a>
+                <a href="#reviews" data-close-menu><img src="img/svg/leaf.svg" alt="">Отзывы</a>
+                <a href="#contacts" data-close-menu><img src="img/svg/cherry.svg" alt="">Контакты</a>
+            </nav>
+            <div class="mobile-menu-foot">
+                <span class="open-status" data-open-status><i></i><b>Ежедневно 10:00–22:00</b></span>
+                <a href="tel:+79612948885" class="btn btn-red btn-block">
+                    <svg class="ic"><use href="#i-phone"/></svg> Позвонить
+                </a>
+                <a href="https://t.me/+79604555858" target="_blank" rel="noopener" class="btn btn-ghost btn-block">
+                    <svg class="ic"><use href="#i-telegram"/></svg> Написать в Telegram
+                </a>
+            </div>
+        </div>
     </div>
 
-    <!-- ========== HERO ========== -->
-    <section class="hero" id="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <img src="img/svg/logo.svg" alt="Будь Здоров" class="hero-logo-img">
-            <p class="hero-subtitle">Комбинат питания с 1998 года</p>
-            <p class="hero-tagline">Здоровое питание &mdash; каждому человеку!</p>
-            <a href="#contacts" class="hero-cta">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                Забронировать
-            </a>
-        </div>
-        <!-- Brand swoosh — red/yellow arcs -->
-        <div class="hero-swoosh">
-            <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="hero-swoosh-svg">
-                <path d="M0,120 L0,82 Q360,48 720,62 Q1080,80 1440,50 L1440,120 Z" fill="var(--cream)"/>
-                <path d="M0,80 Q360,46 720,60 Q1080,78 1440,48" fill="none" stroke="#CC0000" stroke-width="3.5" opacity="0.7"/>
-                <path d="M0,88 Q360,54 720,68 Q1080,86 1440,56" fill="none" stroke="#FFD600" stroke-width="2.5" opacity="0.6"/>
-            </svg>
-        </div>
-    </section>
-
-    <!-- ========== BRAND ICONS STRIP ========== -->
-    <div class="brand-strip">
-        <img src="img/svg/leaf.svg" alt="Листок" class="brand-icon">
-        <img src="img/svg/chicken.svg" alt="Курица" class="brand-icon">
-        <img src="img/svg/crendel.svg" alt="Крендель" class="brand-icon">
-        <img src="img/svg/apple.svg" alt="Яблоко" class="brand-icon">
-        <img src="img/svg/cherry.svg" alt="Вишня" class="brand-icon">
-        <img src="img/svg/pear.svg" alt="Груша" class="brand-icon">
-        <img src="img/svg/beans.svg" alt="Горошек" class="brand-icon">
-    </div>
-
-    <!-- ========== ABOUT ========== -->
-    <section class="section about" id="about">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/apple.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
+    <main>
+        <!-- ========== HERO ========== -->
+        <section class="hero" id="hero">
+            <div class="hero-media" aria-hidden="true">
+                <img src="img/webp/hero-buffet-1280.webp"
+                     srcset="img/webp/hero-buffet-800.webp 800w, img/webp/hero-buffet-1280.webp 1280w, img/webp/hero-buffet.webp 1920w"
+                     sizes="100vw" alt="" fetchpriority="high" decoding="async" width="1920" height="1285">
             </div>
-            <h2 class="section-title fade-in">О нашем комбинате</h2>
-            <p class="section-lead fade-in">Традиции здорового питания с 5 мая 1998 года</p>
-            <div class="about-grid">
-                <div class="about-img fade-in">
-                    <img src="img/team-new.jpg" alt="Команда комбината питания Будь Здоров" loading="lazy">
-                </div>
-                <div class="about-text fade-in">
-                    <h3>Готовим с душой для вас</h3>
-                    <p>Комбинат питания «Будь Здоров» начал свой путь 5 мая 1998 года с небольшого цеха по приготовлению пищи. За эти годы мы выросли в современный комбинат питания площадью 2000 м², обслуживающий более 10 000 покупателей ежедневно.</p>
-                    <p>Наш девиз &mdash; «Здоровое питание &mdash; каждому человеку!» Мы гордимся нашей кухней: каждое блюдо готовится из свежих, натуральных продуктов по авторским и проверенным временем рецептам. Полный цикл производства гарантирует качество на каждом этапе.</p>
-                    <div class="about-features">
-                        <span class="about-feature">
-                            <img src="img/svg/apple.svg" alt="" width="22" height="22">
-                            С 1998 года
-                        </span>
-                        <span class="about-feature">
-                            <img src="img/svg/chicken.svg" alt="" width="22" height="22">
-                            10 000+ клиентов/день
-                        </span>
-                        <span class="about-feature">
-                            <img src="img/svg/pear.svg" alt="" width="22" height="22">
-                            2000 м² производства
-                        </span>
-                        <span class="about-feature">
-                            <img src="img/svg/crendel.svg" alt="" width="22" height="22">
-                            Полный цикл
-                        </span>
-                    </div>
-                </div>
+            <div class="hero-shade" aria-hidden="true"></div>
+            <div class="hero-grain" aria-hidden="true"></div>
+
+            <div class="hero-floaters" aria-hidden="true">
+                <img src="img/svg/leaf.svg" alt="" class="floater f1" style="--depth:30">
+                <img src="img/svg/cherry.svg" alt="" class="floater f2" style="--depth:-40">
+                <img src="img/svg/pear.svg" alt="" class="floater f3" style="--depth:22">
+                <img src="img/svg/apple.svg" alt="" class="floater f4" style="--depth:-26">
+                <img src="img/svg/crendel.svg" alt="" class="floater f5" style="--depth:36">
+                <img src="img/svg/beans.svg" alt="" class="floater f6" style="--depth:-18">
             </div>
-        </div>
-    </section>
 
-    <!-- ========== SERVICES (NEW DESIGN) ========== -->
-    <section class="section services" id="services">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/pear.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
-            </div>
-            <h2 class="section-title fade-in">Наши услуги</h2>
-            <p class="section-lead fade-in">Организуем мероприятие любого формата &mdash; от семейного ужина до корпоративного банкета</p>
-            <div class="services-grid">
-
-                <div class="service-card fade-in d1">
-                    <div class="service-card-img">
-                        <img src="img/svc-banquet.jpg" alt="Банкеты и корпоративы" loading="lazy">
-                    </div>
-                    <div class="service-card-body">
-                        <h3 class="service-card-title">
-                            <img src="img/svg/crendel.svg" alt="" width="28" height="28">
-                            Банкеты и корпоративы
-                        </h3>
-                        <p>Организация корпоративных мероприятий любого масштаба. Индивидуальное меню, оформление зала, обслуживание на высшем уровне.</p>
-                    </div>
-                </div>
-
-                <div class="service-card fade-in d2">
-                    <div class="service-card-img">
-                        <img src="img/wedding-table.jpg" alt="Свадьбы и юбилеи" loading="lazy">
-                    </div>
-                    <div class="service-card-body">
-                        <h3 class="service-card-title">
-                            <img src="img/svg/cherry.svg" alt="" width="28" height="28">
-                            Свадьбы и юбилеи
-                        </h3>
-                        <p>Ваш праздник станет незабываемым! Праздничное оформление, персональное меню, внимание к каждой детали торжества.</p>
-                    </div>
-                </div>
-
-                <div class="service-card fade-in d3">
-                    <div class="service-card-img">
-                        <img src="img/svc-chef.jpg" alt="Поминальные обеды" loading="lazy">
-                    </div>
-                    <div class="service-card-body">
-                        <h3 class="service-card-title">
-                            <img src="img/svg/leaf.svg" alt="" width="28" height="28">
-                            Поминальные обеды
-                        </h3>
-                        <p>Деликатная организация поминальных мероприятий. Специальное меню, спокойная атмосфера, внимательное обслуживание.</p>
-                    </div>
-                </div>
-
-                <div class="service-card fade-in d4">
-                    <div class="service-card-img">
-                        <img src="img/svc-grill.jpg" alt="Летняя площадка и мангал" loading="lazy">
-                    </div>
-                    <div class="service-card-body">
-                        <h3 class="service-card-title">
-                            <img src="img/svg/chicken.svg" alt="" width="28" height="28">
-                            Летняя площадка и мангал
-                        </h3>
-                        <p>Открытая терраса для отдыха на свежем воздухе. Блюда на мангале, шашлыки, барбекю &mdash; идеально для тёплого сезона.</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== DELIVERY ========== -->
-    <section class="section delivery" id="delivery">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/chicken.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
-            </div>
-            <h2 class="section-title fade-in">Всегда вовремя и вкусно</h2>
-        </div>
-        <div class="delivery-inner fade-in">
-            <div class="delivery-text">
-                <p>Мы предлагаем удобный сервис доставки готовых блюд и фуршетных наборов прямо к вашему столу. Кейтеринг для корпоративных мероприятий, праздников и деловых встреч.</p>
-                <div class="delivery-feature">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Термобоксы для сохранения температуры
-                </div>
-                <div class="delivery-feature">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Точно ко времени, без опозданий
-                </div>
-            </div>
-            <div class="delivery-img fade-in">
-                <img src="img/van-new.jpg" alt="Автомобиль доставки Будь Здоров" loading="lazy">
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== GALLERY ========== -->
-    <section class="section gallery" id="gallery">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/crendel.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
-            </div>
-            <h2 class="section-title fade-in">Наша кухня</h2>
-            <p class="section-lead fade-in">Каждое блюдо &mdash; маленький шедевр из натуральных продуктов</p>
-            <div class="gallery-grid">
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-steak.jpg" alt="Стейк с ягодным соусом" loading="lazy">
-                    <span class="gallery-caption">Стейк с ягодным соусом</span>
-                </div>
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-3.jpg" alt="Праздничная сервировка" loading="lazy">
-                    <span class="gallery-caption">Праздничная сервировка</span>
-                </div>
-                <div class="gallery-item tall fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-cake.jpg" alt="Свадебный торт" loading="lazy">
-                    <span class="gallery-caption">Свадебный торт</span>
-                </div>
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-soup.jpg" alt="Домашний суп" loading="lazy">
-                    <span class="gallery-caption">Домашний суп</span>
-                </div>
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-panacota.jpg" alt="Панна-котта" loading="lazy">
-                    <span class="gallery-caption">Панна-котта</span>
-                </div>
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-shashlik.jpg" alt="Шашлык на мангале" loading="lazy">
-                    <span class="gallery-caption">Шашлык на мангале</span>
-                </div>
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-2.jpg" alt="Свежий овощной салат" loading="lazy">
-                    <span class="gallery-caption">Свежий овощной салат</span>
-                </div>
-                <div class="gallery-item fade-in" onclick="openLightbox(this)">
-                    <img src="img/food-5.jpg" alt="Фаршированная рыба" loading="lazy">
-                    <span class="gallery-caption">Фаршированная рыба</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- LIGHTBOX -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <button class="lightbox-close" aria-label="Закрыть">&times;</button>
-        <img id="lightboxImg" src="" alt="">
-    </div>
-
-    <!-- ========== KITCHEN (SCALE) ========== -->
-    <section class="section kitchen" id="kitchen">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/beans.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
-            </div>
-            <h2 class="section-title fade-in">Профессиональный подход к каждому блюду</h2>
-            <div class="kitchen-grid">
-                <div class="kitchen-text fade-in">
-                    <p>Наша гордость &mdash; это современная кухня площадью 2000 м², оснащённая профессиональным оборудованием ведущих мировых производителей: KRONEN (Германия), RATIONAL (Германия), ROBOTCOUPE (Франция).</p>
-                    <p>Полный цикл производства позволяет нам контролировать качество на каждом этапе &mdash; от закупки свежих продуктов до подачи готового блюда. Наш рекорд &mdash; 1236 кг салата «Оливье», занесённый в Книгу рекордов Гиннесса!</p>
-                    <div class="kitchen-stat-grid">
-                        <div class="kitchen-stat">
-                            <h4>1998</h4>
-                            <span>Год основания</span>
-                        </div>
-                        <div class="kitchen-stat">
-                            <h4>10 000+</h4>
-                            <span>Покупателей в день</span>
-                        </div>
-                        <div class="kitchen-stat">
-                            <h4>2000 м²</h4>
-                            <span>Площадь производства</span>
-                        </div>
-                        <div class="kitchen-stat">
-                            <h4>1236 кг</h4>
-                            <span>Рекорд Гиннесса</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="kitchen-img fade-in">
-                    <img src="img/kitchen-new.jpg" alt="Профессиональная кухня комбината Будь Здоров" class="img-main" loading="lazy">
-                    <img src="img/kitchen2-new.jpg" alt="Оборудование кухни" class="img-sub" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== REVIEWS CAROUSEL ========== -->
-    <section class="section reviews" id="reviews">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/leaf.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
-            </div>
-            <h2 class="section-title fade-in">Отзывы наших гостей</h2>
-            <p class="section-lead fade-in">Мы ценим каждое мнение и стараемся быть лучше для вас</p>
-
-            <div class="reviews-slider-wrap fade-in">
-                <button class="reviews-arrow reviews-prev" onclick="moveReview(-1)" aria-label="Предыдущий отзыв">&lsaquo;</button>
-                <div style="overflow: hidden;">
-                    <div class="reviews-slider" id="reviewsSlider">
-                        <div class="review-card">
-                            <p class="review-text">Праздновали юбилей мужа. Очень понравилась кухня – всё по-домашнему вкусно, порции щедрые. Отдельное спасибо за фаршированную рыбу, гости были в восторге!</p>
-                            <span class="review-author">Елена Смирнова</span>
-                            <span class="review-event">Банкет на 30 человек</span>
-                        </div>
-                        <div class="review-card">
-                            <p class="review-text">Заказывали кейтеринг в офис на корпоратив. Привезли всё вовремя, горячее было горячим. Канапе разлетелись за 10 минут. Будем заказывать ещё!</p>
-                            <span class="review-author">Михаил, IT-компания</span>
-                            <span class="review-event">Корпоративный фуршет</span>
-                        </div>
-                        <div class="review-card">
-                            <p class="review-text">Уютное место с отличным сервисом. Летом часто бываем на летней площадке — шашлык просто бомба. Рекомендую всем, кто ищет вкусную еду по адекватным ценам.</p>
-                            <span class="review-author">Анна и Сергей</span>
-                            <span class="review-event">Постоянные гости</span>
-                        </div>
-                        <div class="review-card">
-                            <p class="review-text">Отмечали свадьбу в этом кафе. Столы ломились от угощений, официанты были очень внимательны. Нам даже разрешили принести свой алкоголь, что сильно помогло.</p>
-                            <span class="review-author">Семья Ивановых</span>
-                            <span class="review-event">Свадебный банкет</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="reviews-arrow reviews-next" onclick="moveReview(1)" aria-label="Следующий отзыв">&rsaquo;</button>
-
-                <div class="reviews-nav" id="reviewsDots"></div>
-
-                <!-- Yandex Reviews Rating Widget -->
-                <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 3rem; flex-wrap: wrap;" class="fade-in">
-                    <iframe src="https://yandex.ru/sprav/widget/rating-badge/1027254303" width="150" height="50" frameborder="0" style="border:none;"></iframe>
-                    <a href="https://yandex.ru/maps/org/bud_zdorov/1027254303/reviews/?add-review=true" target="_blank" rel="noopener" class="hero-cta" style="padding: 12px 24px; font-size: 1rem; border-radius: 50px;">Оставить отзыв</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== CONTACTS ========== -->
-    <section class="section contacts" id="contacts">
-        <div class="section-inner">
-            <div class="section-title-deco fade-in">
-                <span class="deco-line"></span>
-                <img src="img/svg/cherry.svg" class="deco-icon" alt="" width="28" height="28">
-                <span class="deco-line"></span>
-            </div>
-            <h2 class="section-title fade-in">Контакты</h2>
-            <p class="section-lead fade-in">Ждём вас в гости &mdash; забронируйте столик прямо сейчас!</p>
-            <div class="contacts-grid">
-                <div class="contacts-info fade-in">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </div>
-                        <div>
-                            <h4>Адрес</h4>
-                            <p>344093, г. Ростов-на-Дону, ул. Днепропетровская, 50&#171;И&#187;</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                        </div>
-                        <div>
-                            <h4>Телефон</h4>
-                            <a href="tel:+79612948885">+7 (961) 294-88-85</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        </div>
-                        <div>
-                            <h4>Время работы</h4>
-                            <p>Ежедневно с 10:00 до 22:00</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                        </div>
-                        <div>
-                            <h4>Email</h4>
-                            <a href="mailto:info@eda.bz">info@eda.bz</a>
-                        </div>
-                    </div>
-                    <a href="tel:+79612948885" class="contact-phone-link">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-                        Позвонить нам
+            <div class="hero-content">
+                <span class="hero-chip open-status" data-open-status><i></i><b>Ежедневно 10:00–22:00</b></span>
+                <img src="img/svg/logo.svg" alt="Будь Здоров" class="hero-logo" width="420" height="209">
+                <h1 class="hero-title">
+                    <span class="word">Комбинат</span> <span class="word">питания</span>
+                    <span class="word">с</span> <span class="word">1998</span> <span class="word">года</span>
+                </h1>
+                <p class="hero-tagline">Здоровое питание &mdash; каждому человеку!</p>
+                <div class="hero-actions">
+                    <a href="#contacts" class="btn btn-yellow btn-lg btn-shine">
+                        <svg class="ic"><use href="#i-phone"/></svg>
+                        Забронировать
+                    </a>
+                    <a href="https://t.me/+79604555858" target="_blank" rel="noopener" class="btn btn-glass btn-lg">
+                        <svg class="ic"><use href="#i-telegram"/></svg>
+                        Написать в Telegram
                     </a>
                 </div>
-                <div class="contacts-map fade-in">
-                    <iframe src="https://yandex.ru/map-widget/v1/?ll=39.803266%2C47.287888&z=17&pt=39.803266%2C47.287888%2Cpm2rdl"
-                        width="100%" height="100%" frameborder="0" allowfullscreen loading="lazy"
-                        title="Комбинат питания Будь Здоров на карте"></iframe>
-                </div>
+            </div>
+
+            <a href="#about" class="hero-scroll" aria-label="Листать вниз"><span></span></a>
+
+            <div class="hero-swoosh" aria-hidden="true">
+                <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+                    <path class="swoosh-fill" d="M0,120 L0,82 Q360,48 720,62 Q1080,80 1440,50 L1440,120 Z"/>
+                    <path class="swoosh-line red" d="M0,80 Q360,46 720,60 Q1080,78 1440,48"/>
+                    <path class="swoosh-line yellow" d="M0,88 Q360,54 720,68 Q1080,86 1440,56"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ========== MARQUEE ========== -->
+        <div class="marquee" aria-label="Что мы делаем">
+            <div class="marquee-track">
+                <ul class="marquee-list">
+                    <li><img src="img/svg/crendel.svg" alt="">Банкеты</li>
+                    <li><img src="img/svg/cherry.svg" alt="">Свадьбы</li>
+                    <li><img src="img/svg/apple.svg" alt="">Юбилеи</li>
+                    <li><img src="img/svg/pear.svg" alt="">Корпоративы</li>
+                    <li><img src="img/svg/chicken.svg" alt="">Мангал</li>
+                    <li><img src="img/svg/leaf.svg" alt="">Поминальные обеды</li>
+                    <li><img src="img/svg/beans.svg" alt="">Кейтеринг</li>
+                    <li><img src="img/svg/apple.svg" alt="">Домашняя кухня</li>
+                </ul>
+                <ul class="marquee-list" aria-hidden="true">
+                    <li><img src="img/svg/crendel.svg" alt="">Банкеты</li>
+                    <li><img src="img/svg/cherry.svg" alt="">Свадьбы</li>
+                    <li><img src="img/svg/apple.svg" alt="">Юбилеи</li>
+                    <li><img src="img/svg/pear.svg" alt="">Корпоративы</li>
+                    <li><img src="img/svg/chicken.svg" alt="">Мангал</li>
+                    <li><img src="img/svg/leaf.svg" alt="">Поминальные обеды</li>
+                    <li><img src="img/svg/beans.svg" alt="">Кейтеринг</li>
+                    <li><img src="img/svg/apple.svg" alt="">Домашняя кухня</li>
+                </ul>
             </div>
         </div>
-    </section>
 
-    <!-- ========== FOOTER (NEW DESIGN) ========== -->
-    <!-- Mirrored hero swoosh — symmetric wave separator -->
-    <div class="footer-wave-top">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="footer-swoosh-svg">
-            <path d="M0,120 L0,82 Q360,48 720,62 Q1080,80 1440,50 L1440,120 Z" fill="#2B2B2B"/>
-            <path d="M0,80 Q360,46 720,60 Q1080,78 1440,48" fill="none" stroke="#CC0000" stroke-width="3.5" opacity="0.7"/>
-            <path d="M0,88 Q360,54 720,68 Q1080,86 1440,56" fill="none" stroke="#FFD600" stroke-width="2.5" opacity="0.6"/>
+        <!-- ========== ABOUT ========== -->
+        <section class="section about" id="about">
+            <div class="container">
+                <div class="sec-head" data-reveal>
+                    <span class="eyebrow"><img src="img/svg/apple.svg" alt="">О нас</span>
+                    <h2 class="sec-title">О нашем <em>комбинате</em></h2>
+                    <p class="sec-lead">Традиции здорового питания с 5 мая 1998 года</p>
+                </div>
+
+                <div class="about-grid">
+                    <figure class="about-media">
+                        <img data-reveal="clip" src="img/webp/team-new.webp" alt="Команда комбината питания Будь Здоров" loading="lazy" decoding="async" width="1200" height="800">
+                        <div class="about-badge" data-reveal="pop" style="--d:5" aria-hidden="true">
+                            <svg viewBox="0 0 120 120" class="about-badge-ring">
+                                <defs><path id="badgeCircle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+                                <text textLength="286" lengthAdjust="spacing"><textPath href="#badgeCircle" textLength="286" lengthAdjust="spacing">БУДЬ ЗДОРОВ • С 1998 ГОДА • С ДУШОЙ • </textPath></text>
+                            </svg>
+                            <span class="about-badge-core"><b data-years>28</b><small>лет</small></span>
+                        </div>
+                    </figure>
+
+                    <div class="about-text" data-reveal="right">
+                        <h3>Готовим с душой для вас</h3>
+                        <p>Комбинат питания «Будь Здоров» начал свой путь 5 мая 1998 года с небольшого цеха по приготовлению пищи. За эти годы мы выросли в современный комбинат питания площадью 2000 м², обслуживающий более 10 000 покупателей ежедневно.</p>
+                        <p>Наш девиз &mdash; «Здоровое питание &mdash; каждому человеку!» Мы гордимся нашей кухней: каждое блюдо готовится из свежих, натуральных продуктов по авторским и проверенным временем рецептам. Полный цикл производства гарантирует качество на каждом этапе.</p>
+                        <ul class="feature-grid">
+                            <li class="feature"><span class="feature-ic"><img src="img/svg/apple.svg" alt=""></span><span><b>С 1998 года</b><small>Опыт и традиции</small></span></li>
+                            <li class="feature"><span class="feature-ic"><img src="img/svg/chicken.svg" alt=""></span><span><b>10 000+</b><small>клиентов в день</small></span></li>
+                            <li class="feature"><span class="feature-ic"><img src="img/svg/pear.svg" alt=""></span><span><b>2000 м²</b><small>производства</small></span></li>
+                            <li class="feature"><span class="feature-ic"><img src="img/svg/crendel.svg" alt=""></span><span><b>Полный цикл</b><small>от закупки до подачи</small></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== SERVICES ========== -->
+        <section class="section services" id="services">
+            <div class="container">
+                <div class="sec-head" data-reveal>
+                    <span class="eyebrow"><img src="img/svg/pear.svg" alt="">Услуги</span>
+                    <h2 class="sec-title">Наши <em>услуги</em></h2>
+                    <p class="sec-lead">Организуем мероприятие любого формата &mdash; от семейного ужина до корпоративного банкета</p>
+                </div>
+
+                <div class="services-grid" data-carousel="services">
+                    <article class="service-card s-wide" data-reveal data-tilt style="--d:0">
+                        <img src="img/webp/svc-banquet.webp" alt="Банкеты и корпоративы" loading="lazy" decoding="async" width="800" height="574">
+                        <div class="service-body">
+                            <span class="service-ic"><img src="img/svg/crendel.svg" alt=""></span>
+                            <h3>Банкеты и корпоративы</h3>
+                            <p>Организация корпоративных мероприятий любого масштаба. Индивидуальное меню, оформление зала, обслуживание на высшем уровне.</p>
+                            <a href="#contacts" class="service-link">Обсудить <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+                        </div>
+                    </article>
+                    <article class="service-card" data-reveal data-tilt style="--d:1">
+                        <img src="img/webp/wedding-table.webp" alt="Свадьбы и юбилеи" loading="lazy" decoding="async" width="800" height="532">
+                        <div class="service-body">
+                            <span class="service-ic"><img src="img/svg/cherry.svg" alt=""></span>
+                            <h3>Свадьбы и юбилеи</h3>
+                            <p>Ваш праздник станет незабываемым! Праздничное оформление, персональное меню, внимание к каждой детали торжества.</p>
+                            <a href="#contacts" class="service-link">Обсудить <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+                        </div>
+                    </article>
+                    <article class="service-card" data-reveal data-tilt style="--d:2">
+                        <img src="img/webp/svc-chef.webp" alt="Поминальные обеды" loading="lazy" decoding="async" width="800" height="533">
+                        <div class="service-body">
+                            <span class="service-ic"><img src="img/svg/leaf.svg" alt=""></span>
+                            <h3>Поминальные обеды</h3>
+                            <p>Деликатная организация поминальных мероприятий. Специальное меню, спокойная атмосфера, внимательное обслуживание.</p>
+                            <a href="#contacts" class="service-link">Обсудить <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+                        </div>
+                    </article>
+                    <article class="service-card s-wide" data-reveal data-tilt style="--d:3">
+                        <img src="img/webp/svc-grill.webp" alt="Летняя площадка и мангал" loading="lazy" decoding="async" width="800" height="532">
+                        <div class="service-body">
+                            <span class="service-ic"><img src="img/svg/chicken.svg" alt=""></span>
+                            <h3>Летняя площадка и мангал</h3>
+                            <p>Открытая терраса для отдыха на свежем воздухе. Блюда на мангале, шашлыки, барбекю &mdash; идеально для тёплого сезона.</p>
+                            <a href="#contacts" class="service-link">Обсудить <svg class="ic"><use href="#i-arrow-right"/></svg></a>
+                        </div>
+                    </article>
+                </div>
+                <div class="carousel-dots" data-dots-for="services" aria-hidden="true"></div>
+            </div>
+        </section>
+
+        <!-- ========== DELIVERY ========== -->
+        <section class="section delivery" id="delivery">
+            <div class="container">
+                <div class="delivery-card">
+                    <div class="delivery-text" data-reveal>
+                        <span class="eyebrow"><img src="img/svg/chicken.svg" alt="">Доставка и кейтеринг</span>
+                        <h2 class="sec-title">Всегда вовремя <em>и вкусно</em></h2>
+                        <p>Мы предлагаем удобный сервис доставки готовых блюд и фуршетных наборов прямо к вашему столу. Кейтеринг для корпоративных мероприятий, праздников и деловых встреч.</p>
+                        <ul class="delivery-list">
+                            <li style="--d:0"><span class="tick"><svg class="ic"><use href="#i-thermo"/></svg></span>Термобоксы для сохранения температуры</li>
+                            <li style="--d:1"><span class="tick"><svg class="ic"><use href="#i-timer"/></svg></span>Точно ко времени, без опозданий</li>
+                            <li style="--d:2"><span class="tick"><svg class="ic"><use href="#i-box"/></svg></span>Готовые блюда и фуршетные наборы</li>
+                        </ul>
+                        <a href="https://t.me/+79604555858" target="_blank" rel="noopener" class="btn btn-red">
+                            <svg class="ic"><use href="#i-telegram"/></svg>
+                            Заказать в Telegram
+                        </a>
+                    </div>
+                    <div class="delivery-media" data-reveal="fade">
+                        <img src="img/webp/van-new.webp" alt="Автомобиль доставки Будь Здоров" loading="lazy" decoding="async" width="1200" height="754">
+                        <div class="road" aria-hidden="true"><span></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== GALLERY ========== -->
+        <section class="section gallery" id="gallery">
+            <div class="container">
+                <div class="sec-head" data-reveal>
+                    <span class="eyebrow"><img src="img/svg/crendel.svg" alt="">Галерея</span>
+                    <h2 class="sec-title">Наша <em>кухня</em></h2>
+                    <p class="sec-lead">Каждое блюдо &mdash; маленький шедевр из натуральных продуктов</p>
+                </div>
+
+                <div class="gallery-grid">
+                    <button class="g-item g-big" type="button" data-reveal="scale" style="--d:0">
+                        <img src="img/webp/food-steak.webp" alt="Стейк с ягодным соусом" loading="lazy" decoding="async" width="800" height="532">
+                        <span class="g-cap">Стейк с ягодным соусом</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item g-tall" type="button" data-reveal="scale" style="--d:1">
+                        <img src="img/webp/food-3.webp" alt="Праздничная сервировка" loading="lazy" decoding="async" width="900" height="1352">
+                        <span class="g-cap">Праздничная сервировка</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item g-tall" type="button" data-reveal="scale" style="--d:2">
+                        <img src="img/webp/food-cake.webp" alt="Свадебный торт" loading="lazy" decoding="async" width="800" height="1018">
+                        <span class="g-cap">Свадебный торт</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item" type="button" data-reveal="scale" style="--d:0">
+                        <img src="img/webp/food-soup.webp" alt="Домашний суп" loading="lazy" decoding="async" width="800" height="604">
+                        <span class="g-cap">Домашний суп</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item" type="button" data-reveal="scale" style="--d:1">
+                        <img src="img/webp/food-panacota.webp" alt="Панна-котта" loading="lazy" decoding="async" width="800" height="533">
+                        <span class="g-cap">Панна-котта</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item g-tall" type="button" data-reveal="scale" style="--d:2">
+                        <img src="img/webp/food-shashlik.webp" alt="Шашлык на мангале" loading="lazy" decoding="async" width="800" height="1200">
+                        <span class="g-cap">Шашлык на мангале</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item g-tall" type="button" data-reveal="scale" style="--d:0">
+                        <img src="img/webp/food-2.webp" alt="Свежий овощной салат" loading="lazy" decoding="async" width="900" height="1352">
+                        <span class="g-cap">Свежий овощной салат</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                    <button class="g-item g-wide" type="button" data-reveal="scale" style="--d:1">
+                        <img src="img/webp/food-5.webp" alt="Фаршированная рыба" loading="lazy" decoding="async" width="900" height="1352">
+                        <span class="g-cap">Фаршированная рыба</span><span class="g-zoom"><svg class="ic"><use href="#i-expand"/></svg></span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== KITCHEN ========== -->
+        <section class="section kitchen" id="kitchen">
+            <div class="container">
+                <div class="sec-head" data-reveal>
+                    <span class="eyebrow"><img src="img/svg/beans.svg" alt="">Производство</span>
+                    <h2 class="sec-title">Профессиональный подход <em>к каждому блюду</em></h2>
+                </div>
+
+                <div class="kitchen-grid">
+                    <div class="kitchen-text" data-reveal>
+                        <p>Наша гордость &mdash; это современная кухня площадью 2000 м², оснащённая профессиональным оборудованием ведущих мировых производителей:</p>
+                        <ul class="brands">
+                            <li>KRONEN <small>Германия</small></li>
+                            <li>RATIONAL <small>Германия</small></li>
+                            <li>ROBOT-COUPE <small>Франция</small></li>
+                        </ul>
+                        <p>Полный цикл производства позволяет нам контролировать качество на каждом этапе &mdash; от закупки свежих продуктов до подачи готового блюда.</p>
+
+                        <div class="record" data-reveal="scale">
+                            <span class="record-ic"><svg class="ic"><use href="#i-trophy"/></svg></span>
+                            <p>Наш рекорд &mdash; <b><span data-count="1236">1236</span> кг</b> салата «Оливье», занесённый в&nbsp;Книгу рекордов Гиннесса!</p>
+                        </div>
+
+                        <div class="stats">
+                            <div class="stat" data-reveal style="--d:0"><b data-count="1998" data-plain>1998</b><span>Год основания</span></div>
+                            <div class="stat" data-reveal style="--d:1"><b><span data-count="10000">10 000</span>+</b><span>Покупателей в день</span></div>
+                            <div class="stat" data-reveal style="--d:2"><b><span data-count="2000">2000</span> м²</b><span>Площадь производства</span></div>
+                            <div class="stat" data-reveal style="--d:3"><b><span data-count="28" data-years>28</span></b><span>Лет с вами</span></div>
+                        </div>
+                    </div>
+                    <div class="kitchen-media" data-reveal="right">
+                        <img src="img/webp/kitchen-new.webp" alt="Профессиональная кухня комбината Будь Здоров" class="k-main" loading="lazy" decoding="async" width="1200" height="798">
+                        <img src="img/webp/kitchen2-new.webp" alt="Оборудование кухни" class="k-sub" loading="lazy" decoding="async" width="1200" height="800">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== REVIEWS ========== -->
+        <section class="section reviews" id="reviews">
+            <div class="container">
+                <div class="sec-head" data-reveal>
+                    <span class="eyebrow"><img src="img/svg/leaf.svg" alt="">Отзывы</span>
+                    <h2 class="sec-title">Отзывы наших <em>гостей</em></h2>
+                    <p class="sec-lead">Мы ценим каждое мнение и стараемся быть лучше для вас</p>
+                </div>
+
+                <div class="reviews-wrap" data-reveal>
+                    <div class="reviews-track" id="reviewsTrack" data-carousel="reviews" tabindex="0" aria-label="Отзывы, листайте горизонтально">
+                        <figure class="review">
+                            <div class="review-top"><span class="stars" aria-label="5 из 5"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span><svg class="ic review-q" aria-hidden="true"><use href="#i-quote"/></svg></div>
+                            <blockquote>Праздновали юбилей мужа. Очень понравилась кухня – всё по-домашнему вкусно, порции щедрые. Отдельное спасибо за фаршированную рыбу, гости были в восторге!</blockquote>
+                            <figcaption><span class="avatar" style="--h:350">Е</span><span><b>Елена Смирнова</b><small>Банкет на 30 человек</small></span></figcaption>
+                        </figure>
+                        <figure class="review">
+                            <div class="review-top"><span class="stars" aria-label="5 из 5"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span><svg class="ic review-q" aria-hidden="true"><use href="#i-quote"/></svg></div>
+                            <blockquote>Заказывали кейтеринг в офис на корпоратив. Привезли всё вовремя, горячее было горячим. Канапе разлетелись за 10 минут. Будем заказывать ещё!</blockquote>
+                            <figcaption><span class="avatar" style="--h:30">М</span><span><b>Михаил, IT-компания</b><small>Корпоративный фуршет</small></span></figcaption>
+                        </figure>
+                        <figure class="review">
+                            <div class="review-top"><span class="stars" aria-label="5 из 5"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span><svg class="ic review-q" aria-hidden="true"><use href="#i-quote"/></svg></div>
+                            <blockquote>Уютное место с отличным сервисом. Летом часто бываем на летней площадке — шашлык просто бомба. Рекомендую всем, кто ищет вкусную еду по адекватным ценам.</blockquote>
+                            <figcaption><span class="avatar" style="--h:120">А</span><span><b>Анна и Сергей</b><small>Постоянные гости</small></span></figcaption>
+                        </figure>
+                        <figure class="review">
+                            <div class="review-top"><span class="stars" aria-label="5 из 5"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span><svg class="ic review-q" aria-hidden="true"><use href="#i-quote"/></svg></div>
+                            <blockquote>Отмечали свадьбу в этом кафе. Столы ломились от угощений, официанты были очень внимательны. Нам даже разрешили принести свой алкоголь, что сильно помогло.</blockquote>
+                            <figcaption><span class="avatar" style="--h:45">С</span><span><b>Семья Ивановых</b><small>Свадебный банкет</small></span></figcaption>
+                        </figure>
+                    </div>
+                    <div class="reviews-controls">
+                        <button class="round-btn" type="button" data-scroll="-1" aria-label="Предыдущий отзыв"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+                        <div class="carousel-dots" data-dots-for="reviews" aria-hidden="true"></div>
+                        <button class="round-btn" type="button" data-scroll="1" aria-label="Следующий отзыв"><svg class="ic"><use href="#i-arrow-right"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="reviews-yandex" data-reveal>
+                    <iframe src="https://yandex.ru/sprav/widget/rating-badge/1027254303" width="150" height="50" title="Рейтинг на Яндекс Картах" loading="lazy"></iframe>
+                    <a href="https://yandex.ru/maps/org/bud_zdorov/1027254303/reviews/?add-review=true" target="_blank" rel="noopener" class="btn btn-yellow">
+                        <svg class="ic"><use href="#i-star"/></svg>
+                        Оставить отзыв
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== CONTACTS ========== -->
+        <section class="section contacts" id="contacts">
+            <div class="container">
+                <div class="sec-head" data-reveal>
+                    <span class="eyebrow"><img src="img/svg/cherry.svg" alt="">Контакты</span>
+                    <h2 class="sec-title">Ждём вас <em>в гости</em></h2>
+                    <p class="sec-lead">Забронируйте столик прямо сейчас!</p>
+                </div>
+
+                <div class="contacts-grid">
+                    <div class="contacts-card" data-reveal>
+                        <span class="open-status open-status-lg" data-open-status><i></i><b>Ежедневно 10:00–22:00</b></span>
+
+                        <ul class="contact-list">
+                            <li>
+                                <span class="contact-ic"><svg class="ic"><use href="#i-pin"/></svg></span>
+                                <span class="contact-body"><small>Адрес</small><span>ул.&nbsp;Днепропетровская, 50&#171;И&#187;</span><span class="contact-sub">344093, г.&nbsp;<span class="nowrap">Ростов-на-Дону</span></span></span>
+                                <button class="icon-btn icon-btn-sm" type="button" data-copy="г. Ростов-на-Дону, ул. Днепропетровская, 50И" aria-label="Скопировать адрес"><svg class="ic"><use href="#i-copy"/></svg></button>
+                            </li>
+                            <li>
+                                <span class="contact-ic"><svg class="ic"><use href="#i-phone"/></svg></span>
+                                <span class="contact-body"><small>Телефон</small><a href="tel:+79612948885">+7 (961) 294-88-85</a></span>
+                            </li>
+                            <li>
+                                <span class="contact-ic"><svg class="ic"><use href="#i-clock"/></svg></span>
+                                <span class="contact-body"><small>Время работы</small><span>Ежедневно с 10:00 до 22:00</span></span>
+                            </li>
+                            <li>
+                                <span class="contact-ic"><svg class="ic"><use href="#i-mail"/></svg></span>
+                                <span class="contact-body"><small>Email</small><a href="mailto:info@eda.bz">info@eda.bz</a></span>
+                            </li>
+                        </ul>
+
+                        <div class="contact-actions">
+                            <a href="tel:+79612948885" class="btn btn-red btn-lg">
+                                <svg class="ic"><use href="#i-phone"/></svg>
+                                Позвонить нам
+                            </a>
+                            <a href="https://t.me/+79604555858" target="_blank" rel="noopener" class="btn btn-ghost">
+                                <svg class="ic"><use href="#i-telegram"/></svg>
+                                Telegram
+                            </a>
+                            <a href="https://yandex.ru/maps/?rtext=~47.287888%2C39.803266&rtt=auto" target="_blank" rel="noopener" class="btn btn-ghost">
+                                <svg class="ic"><use href="#i-route"/></svg>
+                                Маршрут
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="contacts-map" data-reveal="right">
+                        <iframe src="https://yandex.ru/map-widget/v1/?ll=39.803266%2C47.287888&z=17&pt=39.803266%2C47.287888%2Cpm2rdl"
+                            allowfullscreen loading="lazy"
+                            title="Комбинат питания Будь Здоров на карте"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <div class="footer-wave" data-draw aria-hidden="true">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path class="swoosh-fill" d="M0,120 L0,82 Q360,48 720,62 Q1080,80 1440,50 L1440,120 Z"/>
+            <path class="swoosh-line red" d="M0,80 Q360,46 720,60 Q1080,78 1440,48"/>
+            <path class="swoosh-line yellow" d="M0,88 Q360,54 720,68 Q1080,86 1440,56"/>
         </svg>
     </div>
     <footer class="footer">
         <div class="footer-main">
             <div class="footer-brand">
-                <img src="img/svg/logo.svg" alt="Будь Здоров" class="footer-logo">
+                <img src="img/svg/logo.svg" alt="Будь Здоров" class="footer-logo" width="110" height="55" loading="lazy">
                 <p class="footer-motto">&#171;Здоровое питание &mdash; каждому человеку!&#187;</p>
                 <div class="footer-social">
                     <a href="https://t.me/BudZdorov_Cafe" target="_blank" rel="noopener" aria-label="Telegram канал">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                        <svg class="ic"><use href="#i-telegram"/></svg>
                     </a>
                 </div>
             </div>
-            <div class="footer-contacts-col">
+            <div class="footer-col">
+                <h4>Разделы</h4>
+                <a href="#about">О нас</a>
+                <a href="#services">Услуги</a>
+                <a href="#delivery">Доставка</a>
+                <a href="#gallery">Наша кухня</a>
+                <a href="#reviews">Отзывы</a>
+            </div>
+            <div class="footer-col">
                 <h4>Контакты</h4>
                 <p>344093, г. Ростов-на-Дону</p>
                 <p>ул. Днепропетровская, 50&#171;И&#187;</p>
                 <a href="tel:+79612948885">+7 (961) 294-88-85</a>
                 <a href="mailto:info@eda.bz">info@eda.bz</a>
-                <a href="https://t.me/+79604555858" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.4rem;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="opacity:0.7;flex-shrink:0;"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                <a href="https://t.me/+79604555858" target="_blank" rel="noopener" class="footer-tg">
+                    <svg class="ic"><use href="#i-telegram"/></svg>
                     Написать для заказа
                 </a>
             </div>
-            <div class="footer-contacts-col">
+            <div class="footer-col">
                 <h4>Время работы</h4>
                 <p>Ежедневно</p>
                 <p>с 10:00 до 22:00</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="footer-bottom-inner">
-                <p class="footer-copy">&copy; 1998&ndash;2026 Комбинат питания &#171;Будь Здоров!&#187; Все права защищены.</p>
-                <a href="#hero" class="footer-back-top">
-                    Наверх
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-                </a>
-            </div>
+            <p class="footer-copy">&copy; 1998&ndash;<span data-year>2026</span> Комбинат питания &#171;Будь Здоров!&#187; Все права защищены.</p>
+            <a href="#hero" class="footer-top">Наверх <svg class="ic"><use href="#i-chevron-up"/></svg></a>
         </div>
     </footer>
 
-    <script>
-        // Header scroll
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 80);
-        });
+    <!-- BACK TO TOP -->
+    <a href="#hero" class="to-top" id="toTop" aria-label="Наверх">
+        <svg class="to-top-ring" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><circle class="to-top-progress" cx="24" cy="24" r="22" pathLength="100"/></svg>
+        <svg class="ic"><use href="#i-chevron-up"/></svg>
+    </a>
 
-        // Mobile nav
-        function toggleMobileNav() {
-            document.getElementById('mobileNav').classList.toggle('open');
-            document.getElementById('mobileOverlay').classList.toggle('active');
-            document.body.style.overflow =
-                document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
-        }
+    <!-- LIGHTBOX -->
+    <dialog class="lightbox" id="lightbox" aria-label="Просмотр фото">
+        <div class="lightbox-stage">
+            <img id="lightboxImg" src="" alt="">
+        </div>
+        <div class="lightbox-bar">
+            <span class="lightbox-caption" id="lightboxCaption"></span>
+            <span class="lightbox-count" id="lightboxCount"></span>
+        </div>
+        <button class="lightbox-btn lightbox-close" type="button" data-lb="close" aria-label="Закрыть"><svg class="ic"><use href="#i-x"/></svg></button>
+        <button class="lightbox-btn lightbox-prev" type="button" data-lb="prev" aria-label="Предыдущее фото"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+        <button class="lightbox-btn lightbox-next" type="button" data-lb="next" aria-label="Следующее фото"><svg class="ic"><use href="#i-arrow-right"/></svg></button>
+    </dialog>
 
-        // Lightbox
-        function openLightbox(el) {
-            const img = el.querySelector('img');
-            document.getElementById('lightboxImg').src = img.src;
-            document.getElementById('lightboxImg').alt = img.alt;
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-        // Fade-in on scroll
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // Reviews Carousel
-        let currentReview = 0;
-        const slider = document.getElementById('reviewsSlider');
-        const reviewSlides = document.querySelectorAll('.review-card');
-        const dotsContainer = document.getElementById('reviewsDots');
-
-        const getCardsPerView = () => window.innerWidth > 600 ? 2 : 1;
-        let maxIndex = Math.max(0, reviewSlides.length - getCardsPerView());
-
-        function generateDots() {
-            dotsContainer.innerHTML = '';
-            for (let i = 0; i <= maxIndex; i++) {
-                const dot = document.createElement('button');
-                dot.className = `reviews-dot ${i === 0 ? 'active' : ''}`;
-                dot.onclick = () => goToReview(i);
-                dot.setAttribute('aria-label', `Отзыв ${i + 1}`);
-                dotsContainer.appendChild(dot);
-            }
-        }
-
-        function updateReviews() {
-            if (!slider) return;
-            const cardsPerView = getCardsPerView();
-            maxIndex = Math.max(0, reviewSlides.length - cardsPerView);
-            if (currentReview > maxIndex) currentReview = maxIndex;
-
-            const shiftPercent = currentReview * (100 / cardsPerView);
-            const shiftRem = currentReview * 1;
-            slider.style.transform = `translateX(calc(-${shiftPercent}% - ${shiftRem}rem))`;
-
-            const reviewDots = document.querySelectorAll('.reviews-dot');
-            reviewDots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentReview);
-            });
-        }
-
-        function moveReview(step) {
-            currentReview += step;
-            if (currentReview > maxIndex) currentReview = 0;
-            else if (currentReview < 0) currentReview = maxIndex;
-            updateReviews();
-            resetAutoPlay();
-        }
-
-        function goToReview(index) {
-            currentReview = index;
-            updateReviews();
-            resetAutoPlay();
-        }
-
-        let autoPlayInterval;
-        function resetAutoPlay() {
-            clearInterval(autoPlayInterval);
-            autoPlayInterval = setInterval(() => moveReview(1), 5000);
-        }
-
-        generateDots();
-        updateReviews();
-        resetAutoPlay();
-        window.addEventListener('resize', () => {
-            generateDots();
-            updateReviews();
-        });
-    </script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
 </body>
 </html>
