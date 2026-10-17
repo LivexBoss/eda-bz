@@ -39,6 +39,8 @@
             }
             document.documentElement.dataset.theme = t;
             document.documentElement.classList.add('js');
+            // Заставка первого экрана ждёт фото; страховка — если main.js не загрузится
+            setTimeout(function () { document.documentElement.classList.add('intro-go'); }, 2500);
         })();
     </script>
 
@@ -109,6 +111,15 @@
             <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
             <symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
             <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+            <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol>
+            <symbol id="i-van" viewBox="0 0 48 28">
+                <path fill="#FFCB23" stroke="#221B17" stroke-width="1.6" stroke-linejoin="round" d="M3 7.5A3.5 3.5 0 0 1 6.5 4h24a4 4 0 0 1 2.9 1.2l6.2 6.3 3.6 1.3a3 3 0 0 1 1.8 2.8V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+                <path fill="#E30016" d="M4 18.6c9-.4 20-2.8 37.2-4.6l.6 2.1C25 17.9 13 20.4 4 21Z"/>
+                <path fill="#2B2420" d="M32 7.2h1.2l5.4 5.4H32Z"/>
+                <rect fill="#2B2420" x="22.5" y="7.2" width="7" height="5.4" rx="1"/>
+                <circle cx="12" cy="22" r="4.2" fill="#221B17"/><circle cx="12" cy="22" r="1.7" fill="#E9E2DA"/>
+                <circle cx="36" cy="22" r="4.2" fill="#221B17"/><circle cx="36" cy="22" r="1.7" fill="#E9E2DA"/>
+            </symbol>
             <symbol id="i-expand" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></symbol>
             <symbol id="i-external" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
             <symbol id="i-telegram" viewBox="0 0 24 24"><path stroke="none" fill="currentColor" d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></symbol>
@@ -189,6 +200,8 @@
             </div>
             <div class="hero-shade" aria-hidden="true"></div>
             <div class="hero-grain" aria-hidden="true"></div>
+            <div class="hero-steam" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="hero-dim" aria-hidden="true"></div>
 
             <div class="hero-floaters" aria-hidden="true">
                 <img src="img/svg/leaf.svg" alt="" class="floater f1" style="--depth:30">
@@ -201,7 +214,14 @@
 
             <div class="hero-content">
                 <span class="hero-chip open-status" data-open-status><i></i><b>Ежедневно 10:00–22:00</b></span>
-                <img src="img/svg/logo.svg" alt="Будь Здоров" class="hero-logo" width="420" height="209">
+                <!-- Логотип из двух частей: салфетка с приборами «выпрыгивает» снизу, надпись въезжает справа -->
+                <div class="hero-logo" id="heroLogo" role="img" aria-label="Будь Здоров">
+                    <span class="logo-part logo-word" aria-hidden="true"><img src="img/svg/logo.svg" alt="" width="420" height="209" draggable="false"><i class="logo-seam"></i></span>
+                    <span class="logo-part logo-icon" aria-hidden="true"><img src="img/svg/logo.svg" alt="" width="420" height="209" draggable="false"><i class="logo-seam"></i></span>
+                    <span class="logo-shine" aria-hidden="true"></span>
+                    <span class="logo-snap logo-snap-top" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                    <span class="logo-snap logo-snap-bottom" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                </div>
                 <h1 class="hero-title">
                     <span class="word">Комбинат</span> <span class="word">питания</span>
                     <span class="word">с</span> <span class="word">1998</span> <span class="word">года</span>
@@ -362,8 +382,27 @@
                         </a>
                     </div>
                     <div class="delivery-media" data-reveal="fade">
-                        <img src="img/webp/van-new.webp" alt="Автомобиль доставки Будь Здоров" loading="lazy" decoding="async" width="1200" height="754">
-                        <div class="road" aria-hidden="true"><span></span></div>
+                        <!-- Фургон на фото едет влево: въезжает справа и тормозит -->
+                        <div class="van-frame">
+                            <img src="img/webp/van-new.webp" alt="Автомобиль доставки Будь Здоров" loading="lazy" decoding="async" width="1200" height="754">
+                            <span class="van-streaks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+                        </div>
+                        <!-- Карточка «доставка в пути»: фургончик едет от кухни к гостю -->
+                        <div class="tracker" aria-hidden="true">
+                            <div class="tracker-status">
+                                <span class="tracker-dot"></span>
+                                <span class="tracker-msgs"><b class="tracker-msg">Везём ваш заказ</b><b class="tracker-msg tracker-msg-done"><svg class="ic"><use href="#i-check"/></svg>Доставлено вовремя</b></span>
+                            </div>
+                            <div class="tracker-route">
+                                <span class="tracker-pt tracker-from"><svg class="ic"><use href="#i-utensils"/></svg></span>
+                                <span class="tracker-line">
+                                    <span class="tracker-fill"></span>
+                                    <span class="tracker-van"><svg viewBox="0 0 48 28"><use href="#i-van"/></svg></span>
+                                </span>
+                                <span class="tracker-pt tracker-to"><svg class="ic"><use href="#i-home"/></svg><svg class="ic"><use href="#i-check"/></svg></span>
+                            </div>
+                            <div class="tracker-labels"><span>Кухня</span><span>Ваш стол</span></div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -108,6 +108,7 @@
     const heroMedia = $('.hero-media');
     const heroContent = $('.hero-content');
     const kSub = $('.k-sub');
+    const gTiles = $$('.g-item');
     let lastY = window.scrollY;
     let ticking = false;
 
@@ -146,6 +147,13 @@
                     kSub.style.setProperty('--par', `${offset.toFixed(1)}px`);
                 }
             }
+            // фото в плитках галереи едут чуть медленнее рамки (сначала все замеры, потом запись)
+            const rects = gTiles.map((tile) => tile.getBoundingClientRect());
+            rects.forEach((r, i) => {
+                if (r.bottom < 0 || r.top > vh) return;
+                const k = (r.top + r.height / 2 - vh / 2) / (vh / 2 + r.height / 2);
+                gTiles[i].style.setProperty('--py', `${(k * r.height * -0.05).toFixed(1)}px`);
+            });
         }
         ticking = false;
     }
@@ -153,6 +161,34 @@
         if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
     }, { passive: true });
     onScroll();
+
+    /* ---------- Hero: заставка стартует, когда фото готово (но не позже чем через 1 с) ---------- */
+    const heroImg = $('.hero-media img');
+    const startIntro = () => root.classList.add('intro-go');
+    if (reduceMotion || !heroImg) {
+        startIntro();
+    } else {
+        const loaded = heroImg.complete ? Promise.resolve() : new Promise((resolve) => {
+            heroImg.addEventListener('load', resolve, { once: true });
+            heroImg.addEventListener('error', resolve, { once: true });
+        });
+        loaded.then(() => (heroImg.decode ? heroImg.decode() : null)).catch(() => {}).then(startIntro);
+        setTimeout(startIntro, 1000);
+    }
+
+    /* ---------- Hero: по клику логотип собирается заново ---------- */
+    const heroLogo = $('#heroLogo');
+    if (heroLogo && !reduceMotion && heroLogo.getAnimations) {
+        heroLogo.addEventListener('click', () => {
+            if (!root.classList.contains('intro-go')) return;
+            heroLogo.getAnimations({ subtree: true }).forEach((a) => {
+                if (!a.animationName) return; // переходы (наведение) не трогаем
+                if (a.effect && a.effect.getComputedTiming().iterations === Infinity) return; // блик идёт по своему кругу
+                a.cancel();
+                a.play();
+            });
+        });
+    }
 
     /* ---------- Hero: плавающие иконки следуют за курсором ---------- */
     const floaters = $('.hero-floaters');
@@ -223,6 +259,35 @@
     window.addEventListener('resize', moveIndicator);
     document.fonts && document.fonts.ready.then(moveIndicator);
 
+    /* ---------- Заголовки разделов: слова поднимаются по одному ---------- */
+    if (!reduceMotion) {
+        $$('.sec-title').forEach((title) => {
+            let i = 0;
+            const split = (node) => {
+                Array.from(node.childNodes).forEach((child) => {
+                    if (child.nodeType === Node.TEXT_NODE) {
+                        if (!child.textContent.trim()) return;
+                        const frag = document.createDocumentFragment();
+                        child.textContent.split(/(\s+)/).forEach((part) => {
+                            if (!part) return;
+                            if (!part.trim()) { frag.appendChild(document.createTextNode(part)); return; }
+                            const w = document.createElement('span');
+                            w.className = 'w';
+                            w.style.setProperty('--i', i++);
+                            w.textContent = part;
+                            frag.appendChild(w);
+                        });
+                        child.replaceWith(frag);
+                    } else if (child.nodeType === Node.ELEMENT_NODE) {
+                        split(child);
+                    }
+                });
+            };
+            split(title);
+            title.classList.add('split');
+        });
+    }
+
     /* ---------- Reveal on scroll ---------- */
     const revealIO = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -240,6 +305,12 @@
         });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     $$('[data-reveal], [data-draw]').forEach((el) => revealIO.observe(el));
+
+    /* ---------- Трекер доставки: анимация идёт, только пока карточка на экране ---------- */
+    const tracker = $('.tracker');
+    if (tracker) {
+        new IntersectionObserver(([e]) => tracker.classList.toggle('playing', e.isIntersecting), { threshold: 0.3 }).observe(tracker);
+    }
 
     /* ---------- Count-up numbers ---------- */
     const fmt = new Intl.NumberFormat('ru-RU');
@@ -455,6 +526,64 @@
         };
         lbStage.addEventListener('pointerup', endDrag);
         lbStage.addEventListener('pointercancel', endDrag);
+    }
+
+    /* ---------- Бегущая строка ускоряется и меняет направление вслед за прокруткой ---------- */
+    const marquee = $('.marquee');
+    const marqueeTrack = marquee && $('.marquee-track', marquee);
+    const marqueeAnim = marqueeTrack && !reduceMotion && marqueeTrack.getAnimations ? marqueeTrack.getAnimations()[0] : null;
+    if (marqueeAnim) {
+        // отматываем далеко вперёд: при обратном ходе анимация не упрётся в начало
+        marqueeAnim.currentTime = (marqueeAnim.currentTime || 0) + 38000 * 500;
+        const setRate = (r) => (marqueeAnim.updatePlaybackRate ? marqueeAnim.updatePlaybackRate(r) : (marqueeAnim.playbackRate = r));
+        let prevY = window.scrollY, speed = 1, dir = 1, lastRate = 1, raf = 0, visible = false;
+        const loop = () => {
+            const y = window.scrollY;
+            const dy = y - prevY;
+            prevY = y;
+            if (Math.abs(dy) > 1) dir = dy > 0 ? 1 : -1;
+            speed += (1 + Math.min(Math.abs(dy) / 6, 6) - speed) * 0.1;
+            const rate = Math.round(dir * speed * 100) / 100;
+            if (rate !== lastRate) {
+                setRate(rate);
+                lastRate = rate;
+                marquee.style.setProperty('--skew', `${(dir * (speed - 1) * 1.6).toFixed(2)}deg`);
+            }
+            raf = visible ? requestAnimationFrame(loop) : 0;
+        };
+        new IntersectionObserver(([e]) => {
+            visible = e.isIntersecting;
+            if (visible && !raf) { prevY = window.scrollY; raf = requestAnimationFrame(loop); }
+        }).observe(marquee);
+    }
+
+    /* ---------- «Магнитные» кнопки: слегка тянутся за курсором ---------- */
+    if (finePointer && !reduceMotion) {
+        $$('.hero-actions .btn, .delivery-text .btn, .contact-actions .btn, .reviews-yandex .btn, .header-phone').forEach((btn) => {
+            btn.addEventListener('pointermove', (e) => {
+                const r = btn.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                btn.style.translate = `${(x * 12).toFixed(1)}px ${(y * 8).toFixed(1)}px`;
+            });
+            btn.addEventListener('pointerleave', () => { btn.style.translate = ''; });
+        });
+    }
+
+    /* ---------- Волна от точки нажатия на кнопках ---------- */
+    if (!reduceMotion) {
+        document.addEventListener('pointerdown', (e) => {
+            const btn = e.target.closest('.btn, .service-link');
+            if (!btn) return;
+            const r = btn.getBoundingClientRect();
+            const ink = document.createElement('span');
+            ink.className = 'ripple';
+            ink.style.left = `${e.clientX - r.left}px`;
+            ink.style.top = `${e.clientY - r.top}px`;
+            ink.style.setProperty('--s', Math.ceil(Math.hypot(r.width, r.height) / 5));
+            btn.appendChild(ink);
+            ink.addEventListener('animationend', () => ink.remove());
+        });
     }
 
     /* ---------- Copy to clipboard ---------- */

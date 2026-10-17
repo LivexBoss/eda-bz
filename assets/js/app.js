@@ -194,7 +194,7 @@
 
         // Тактильный отклик на кнопки
         document.addEventListener('click', (e) => {
-            if (e.target.closest('.btn, .g-item, .round-btn, .icon-btn, .service-link')) haptic('light');
+            if (e.target.closest('.btn, .g-item, .round-btn, .icon-btn, .service-link, .hero-logo')) haptic('light');
         }, true);
     }
 })();
