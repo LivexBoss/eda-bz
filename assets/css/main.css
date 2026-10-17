@@ -945,8 +945,9 @@ ul { list-style: none; }
 .contact-body small {
     font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
 }
-.contact-body a, .contact-body span { font-weight: 500; font-size: 1.02rem; color: var(--ink); }
+.contact-body > a, .contact-body > span { font-weight: 500; font-size: 1.02rem; color: var(--ink); }
 .contact-body a:hover { color: var(--red); }
+.contact-body > .contact-sub { font-size: 0.88rem; font-weight: 400; color: var(--muted); }
 .contact-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: auto; }
 .contact-actions .btn-lg { flex: 1 1 100%; }
 .contact-actions .btn-ghost { flex: 1 1 0; }
