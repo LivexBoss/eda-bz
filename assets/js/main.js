@@ -10,6 +10,22 @@
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
+    /* ---------- Сайт всегда открывается с первого экрана ---------- */
+    // Иначе браузер восстанавливает прежнюю прокрутку или переходит к #разделу из адреса,
+    // и заставку не видно. Ярлыки приложения (?source=app#services…) по-прежнему ведут в раздел.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    const fromAppShortcut = /[?&]source=app\b/.test(location.search);
+    const hashSection = location.hash.length > 1 && document.getElementById(location.hash.slice(1));
+    if (!(hashSection && fromAppShortcut)) {
+        if (hashSection) history.replaceState(null, '', location.pathname + location.search);
+        const toTop = () => window.scrollTo({ top: 0, behavior: 'instant' });
+        let userScrolled = false;
+        ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach((type) =>
+            window.addEventListener(type, () => { userScrolled = true; }, { once: true, passive: true }));
+        toTop();
+        window.addEventListener('load', () => { if (!userScrolled) toTop(); }, { once: true });
+    }
+
     /* ---------- Toast ---------- */
     const toastEl = $('#toast');
     let toastTimer;
@@ -162,9 +178,161 @@
     }, { passive: true });
     onScroll();
 
+    /* ---------- Hero: логотип собирается из двух деталей — по законам физики ----------
+       Салфетка с приборами вылетает из-под нижнего края (на 2/3 ширины экрана) и летит
+       по параболе вверх-влево; надпись въезжает справа и, притормаживая, догоняет её.
+       Удар неупругий: при касании тяжёлая надпись замедляется, лёгкая салфетка разгоняется,
+       импульс сохраняется, и дальше обе детали скользят вместе по инерции, пока трение
+       их не остановит. Скорости — в ширинах логотипа за секунду, время — в секундах. */
+    const heroLogo = $('#heroLogo');
+    const logo = heroLogo && {
+        body: $('.logo-body', heroLogo),
+        icon: $('.logo-icon', heroLogo),
+        word: $('.logo-word', heroLogo),
+        full: $('.logo-full', heroLogo),
+        flash: $('.logo-flash', heroLogo),
+        snaps: $$('.logo-snap i', heroLogo),
+    };
+    const canAssemble = !!(logo && logo.body && typeof heroLogo.animate === 'function' && !reduceMotion);
+    const SNAP_ANGLES = [-62, -22, 18, 58, 122, 162, 202, 242];
+
+    function assembleLogo() {
+        const { body, icon, word, full, flash, snaps } = logo;
+        const parts = [body, icon, word, full, flash, ...snaps];
+        parts.forEach((el) => el.getAnimations().forEach((a) => a.cancel()));
+
+        const W = heroLogo.offsetWidth;
+        const H = heroLogo.offsetHeight;
+        const box = heroLogo.getBoundingClientRect();
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const add = (a, b, k = 1) => [a[0] + b[0] * k, a[1] + b[1] * k];
+
+        const T0 = 0.8;                    // касание обводок
+        const SLIDE = 0.55;                // совместное скольжение до остановки
+        const mWord = 0.77, mIcon = 0.23;  // «массы» — по площади деталей
+        // на узком экране скорости меньше, чтобы в момент удара логотип не уезжал за край
+        const room = (vw - 6 - box.right) / (0.44 * W * SLIDE);
+        const fit = Math.min(1, Math.max(0.45, room));
+        const vWord = [-1.07 * W * fit, -0.27 * W * fit];
+        const vIcon = [-0.25 * W * fit, -0.05 * W * fit];
+        const v = add([mWord * vWord[0], mWord * vWord[1]], vIcon, mIcon); // общая скорость после удара
+        // при касании детали разнесены на ширину своих обводок; за время удара TM
+        // надпись «вщёлкивается» в салфетку (постоянная сила контакта)
+        const GAP = 0.042 * W;
+        const TM = 2 * GAP / Math.abs(vWord[0] - vIcon[0]);
+        const T1 = T0 + TM;
+        const END = T1 + SLIDE;
+        const D = [-v[0] * SLIDE / 2, -v[1] * SLIDE / 2];   // где логотип в конце удара: дальше равнозамедленно до нуля
+        const iconT0 = add(D, add(vIcon, v), -TM / 2);      // где салфетка в момент касания
+        const wordT0 = add(D, add(vWord, v), -TM / 2);      // …и надпись
+
+        // Полёт салфетки: равноускоренно по каждой оси, к T0 — в точке касания со скоростью vIcon
+        const iconFrom = [0.67 * vw - (box.left + 0.115 * W), vh + 0.55 * H - (box.top + 0.5 * H)];
+        const aIcon = [0, 1].map((k) => 2 * (iconFrom[k] - iconT0[k] + vIcon[k] * T0) / (T0 * T0));
+        const v0Icon = [0, 1].map((k) => vIcon[k] - aIcon[k] * T0);
+        // Надпись: из-за правого края вдоль своего наклона, тормозит до скорости vWord
+        const TW = 0.6;
+        const speedW = Math.hypot(vWord[0], vWord[1]);
+        const dirW = [-vWord[0] / speedW, -vWord[1] / speedW];
+        const L = Math.max(speedW * TW, (vw + 12 - box.left - 0.146 * W - wordT0[0]) / dirW[0]);
+        const v0W = 2 * L / TW - speedW;
+        const decW = (v0W - speedW) / TW;
+        const ROT0 = 70, ROT1 = -4;        // салфетка вращается в полёте, удар её выпрямляет
+
+        // во время удара — постоянная сила контакта: надпись тормозит, салфетка разгоняется до общей скорости v
+        const merge = (p0, v0, t) => {
+            const s = t - T0;
+            return add(add(p0, v0, s), add(v, v0, -1), s * s / (2 * TM));
+        };
+        // Корпус (цельный логотип, вспышка, искры) держится за надписью, после удара скользит
+        // из D в 0 равнозамедленно и пружинит от сжатия
+        const bodyAt = (t) => {
+            const dt = t - T0;
+            const k = dt > 0 ? 0.075 * Math.exp(-dt / 0.09) * Math.sin(dt * Math.PI * 10) : 0;
+            let p;
+            if (t <= T0) p = wordT0;
+            else if (t <= T1) p = merge(wordT0, vWord, t);
+            else {
+                const u = Math.min(1, (t - T1) / SLIDE);
+                const q = 1 - (1 - u) * (1 - u);
+                p = [D[0] * (1 - q), D[1] * (1 - q)];
+            }
+            return [p[0], p[1], 1 - k, 1 + 0.7 * k];
+        };
+        const iconAt = (t) => {
+            if (t <= T0) return [...[0, 1].map((k) => iconFrom[k] + v0Icon[k] * t + aIcon[k] * t * t / 2), ROT0 + (ROT1 - ROT0) * t / T0];
+            if (t <= T1) return [...merge(iconT0, vIcon, t), ROT1 * (1 - (t - T0) / TM)];
+            return [...bodyAt(t).slice(0, 2), 0];
+        };
+        const wordAt = (t) => {
+            if (t <= T0) {
+                const tau = Math.max(0, t - (T0 - TW));
+                return add(wordT0, dirW, L - (v0W * tau - decW * tau * tau / 2));
+            }
+            return bodyAt(t).slice(0, 2);
+        };
+
+        // Кадры: равномерная сетка + все переломные моменты
+        const times = new Set([0, T0 - TW, T0, T0 + TM / 2, T1, END]);
+        for (let i = 1; i < 90; i++) times.add(END * i / 90);
+        const ts = Array.from(times).filter((t) => t >= 0 && t <= END).sort((a, b) => a - b);
+        const f = (n) => n.toFixed(2);
+        const rel = (p, b) => [p[0] - b[0], p[1] - b[1]];
+        const bodyFrames = [], iconFrames = [], wordFrames = [];
+        ts.forEach((t) => {
+            const offset = t / END;
+            const b = bodyAt(t);
+            const ic = iconAt(t);
+            const ir = rel(ic, b);
+            const wr = rel(wordAt(t), b);
+            bodyFrames.push({ offset, transform: `translate(${f(b[0])}px, ${f(b[1])}px) scale(${b[2].toFixed(4)}, ${b[3].toFixed(4)})` });
+            iconFrames.push({ offset, transform: `translate(${f(ir[0])}px, ${f(ir[1])}px) rotate(${f(ic[2])}deg)` });
+            wordFrames.push({ offset, transform: `translate(${f(wr[0])}px, ${f(wr[1])}px)` });
+        });
+        const ms = (s) => Math.round(s * 1000);
+        const run = (el, frames, opts) => el.animate(frames, Object.assign({ fill: 'both' }, opts));
+        const anims = [
+            run(body, bodyFrames, { duration: ms(END) }),
+            run(icon, iconFrames, { duration: ms(END) }),
+            run(word, wordFrames, { duration: ms(END) }),
+            // детали видны до стыковки, затем их сменяет цельный логотип
+            run(icon, [{ opacity: 1 }, { opacity: 0 }], { duration: 40, delay: ms(T1 + 0.04) }),
+            run(word, [{ opacity: 1 }, { opacity: 0 }], { duration: 40, delay: ms(T1 + 0.04) }),
+            run(full, [{ opacity: 0 }, { opacity: 1 }], { duration: ms(TM * 0.4 + 0.04), delay: ms(T0 + TM * 0.6) }),
+            run(flash, [
+                { opacity: 0, transform: 'scale(0.4)' },
+                { opacity: 0.65, transform: 'scale(0.9)', offset: 0.18 },
+                { opacity: 0, transform: 'scale(1.3)' },
+            ], { duration: 300, delay: ms(T0), easing: 'ease-out' }),
+            ...snaps.map((el, i) => {
+                const a = SNAP_ANGLES[i] || 0;
+                return run(el, [
+                    { opacity: 0, transform: `rotate(${a}deg) translateY(-6px) scaleY(0.2)` },
+                    { opacity: 1, transform: `rotate(${a}deg) translateY(-20px) scaleY(1)`, offset: 0.18 },
+                    { opacity: 0, transform: `rotate(${a}deg) translateY(-36px) scaleY(0.2)` },
+                ], { duration: 560, delay: ms(T0), easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+            }),
+        ];
+        // по окончании возвращаемся к обычному состоянию (цельный логотип на месте)
+        Promise.all(anims.map((a) => a.finished)).then(() => anims.forEach((a) => a.cancel())).catch(() => {});
+    }
+
+    if (canAssemble) {
+        heroLogo.addEventListener('click', () => {
+            if (root.classList.contains('intro-go')) assembleLogo();
+        });
+    }
+
     /* ---------- Hero: заставка стартует, когда фото готово (но не позже чем через 1 с) ---------- */
     const heroImg = $('.hero-media img');
-    const startIntro = () => root.classList.add('intro-go');
+    let introStarted = false;
+    const startIntro = () => {
+        if (introStarted) return;
+        introStarted = true;
+        root.classList.add('intro-go');
+        if (canAssemble) assembleLogo();
+    };
     if (reduceMotion || !heroImg) {
         startIntro();
     } else {
@@ -174,20 +342,6 @@
         });
         loaded.then(() => (heroImg.decode ? heroImg.decode() : null)).catch(() => {}).then(startIntro);
         setTimeout(startIntro, 1000);
-    }
-
-    /* ---------- Hero: по клику логотип собирается заново ---------- */
-    const heroLogo = $('#heroLogo');
-    if (heroLogo && !reduceMotion && heroLogo.getAnimations) {
-        heroLogo.addEventListener('click', () => {
-            if (!root.classList.contains('intro-go')) return;
-            heroLogo.getAnimations({ subtree: true }).forEach((a) => {
-                if (!a.animationName) return; // переходы (наведение) не трогаем
-                if (a.effect && a.effect.getComputedTiming().iterations === Infinity) return; // блик идёт по своему кругу
-                a.cancel();
-                a.play();
-            });
-        });
     }
 
     /* ---------- Hero: плавающие иконки следуют за курсором ---------- */
@@ -227,6 +381,22 @@
     window.EDA.setMenu = setMenu;
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && menu && menu.classList.contains('open')) setMenu(false);
+    });
+
+    /* ---------- Якорные ссылки: плавная прокрутка без #раздела в адресе ---------- */
+    // Иначе адрес превращается в eda.bz/#delivery, и после обновления страница открывается не с начала
+    document.addEventListener('click', (e) => {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        const link = e.target.closest('a[href^="#"]');
+        if (!link || link.classList.contains('skip-link')) return;
+        const id = link.getAttribute('href').slice(1);
+        const target = id && document.getElementById(id);
+        if (!target) return;
+        e.preventDefault();
+        const behavior = reduceMotion ? 'auto' : 'smooth';
+        if (id === 'hero') window.scrollTo({ top: 0, behavior });
+        else target.scrollIntoView({ behavior, block: 'start' });
+        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
     });
 
     /* ---------- Scroll-spy: активный пункт меню ---------- */
