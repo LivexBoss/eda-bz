@@ -101,7 +101,6 @@
             <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
             <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
             <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
-            <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
             <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
             <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></symbol>
             <symbol id="i-quote" viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></symbol>
@@ -137,6 +136,7 @@
             </a>
             <nav class="nav" id="nav" aria-label="Основное меню">
                 <span class="nav-indicator" aria-hidden="true"></span>
+                <span class="nav-hover" aria-hidden="true"></span>
                 <a href="#about">О нас</a>
                 <a href="#services">Услуги</a>
                 <a href="#delivery">Доставка</a>
@@ -153,42 +153,9 @@
                     <svg class="ic"><use href="#i-phone"/></svg>
                     <span>+7 (961) 294-88-85</span>
                 </a>
-                <button class="icon-btn burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu">
-                    <svg class="ic"><use href="#i-menu"/></svg>
-                </button>
             </div>
         </div>
     </header>
-
-    <!-- MOBILE MENU -->
-    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
-        <div class="mobile-menu-backdrop" data-close-menu></div>
-        <div class="mobile-menu-panel" role="dialog" aria-modal="true" aria-label="Меню">
-            <div class="mobile-menu-head">
-                <img src="img/svg/logo.svg" alt="Будь Здоров" width="96" height="48">
-                <button class="icon-btn" type="button" data-close-menu aria-label="Закрыть меню">
-                    <svg class="ic"><use href="#i-x"/></svg>
-                </button>
-            </div>
-            <nav class="mobile-menu-links">
-                <a href="#about" data-close-menu><img src="img/svg/apple.svg" alt="">О нас</a>
-                <a href="#services" data-close-menu><img src="img/svg/pear.svg" alt="">Услуги</a>
-                <a href="#delivery" data-close-menu><img src="img/svg/chicken.svg" alt="">Доставка</a>
-                <a href="#gallery" data-close-menu><img src="img/svg/crendel.svg" alt="">Наша кухня</a>
-                <a href="#reviews" data-close-menu><img src="img/svg/leaf.svg" alt="">Отзывы</a>
-                <a href="#contacts" data-close-menu><img src="img/svg/cherry.svg" alt="">Контакты</a>
-            </nav>
-            <div class="mobile-menu-foot">
-                <span class="open-status" data-open-status><i></i><b>Ежедневно 10:00–22:00</b></span>
-                <a href="tel:+79612948885" class="btn btn-red btn-block">
-                    <svg class="ic"><use href="#i-phone"/></svg> Позвонить
-                </a>
-                <a href="https://t.me/+79604555858" target="_blank" rel="noopener" class="btn btn-ghost btn-block">
-                    <svg class="ic"><use href="#i-telegram"/></svg> Написать в Telegram
-                </a>
-            </div>
-        </div>
-    </div>
 
     <main>
         <!-- ========== HERO ========== -->
@@ -623,6 +590,8 @@
                         <svg class="ic"><use href="#i-telegram"/></svg>
                     </a>
                 </div>
+                <!-- сюда app.js добавляет «Установить приложение» (Android) или подсказку для iPhone -->
+                <div class="app-install" id="appInstall"></div>
             </div>
             <div class="footer-col">
                 <h4>Разделы</h4>

@@ -125,7 +125,6 @@
     const heroContent = $('.hero-content');
     const kSub = $('.k-sub');
     const gTiles = $$('.g-item');
-    let lastY = window.scrollY;
     let ticking = false;
 
     function onScroll() {
@@ -134,13 +133,7 @@
         const max = document.documentElement.scrollHeight - vh;
         const p = max > 0 ? Math.min(1, y / max) : 0;
 
-        header.classList.toggle('scrolled', y > 40);
-        // Шапка прячется при прокрутке вниз и возвращается при прокрутке вверх
-        if (!document.body.classList.contains('menu-open')) {
-            if (y > vh * 0.6 && y - lastY > 6) header.classList.add('hide');
-            else if (lastY - y > 6 || y < vh * 0.6) header.classList.remove('hide');
-        }
-        lastY = y;
+        header.classList.toggle('scrolled', y > 40); // шапка всегда на месте, при прокрутке меняет стекло
 
         if (progressBar) progressBar.style.transform = `scaleX(${p})`;
         if (toTop) {
@@ -322,6 +315,15 @@
         heroLogo.addEventListener('click', () => {
             if (root.classList.contains('intro-go')) assembleLogo();
         });
+        // вернулись к первому экрану, полностью уйдя с него, — логотип собирается заново
+        let heroAway = false;
+        new IntersectionObserver(([e]) => {
+            if (!e.isIntersecting) { heroAway = true; return; }
+            if (heroAway && e.intersectionRatio >= 0.5 && root.classList.contains('intro-go')) {
+                heroAway = false;
+                assembleLogo();
+            }
+        }, { threshold: [0, 0.5] }).observe(hero);
     }
 
     /* ---------- Hero: заставка стартует, когда фото готово (но не позже чем через 1 с) ---------- */
@@ -357,31 +359,6 @@
             floaters.style.setProperty('--my', 0);
         });
     }
-
-    /* ---------- Mobile menu ---------- */
-    const menu = $('#mobileMenu');
-    const burger = $('#burger');
-    function setMenu(open) {
-        if (!menu) return;
-        menu.classList.toggle('open', open);
-        menu.setAttribute('aria-hidden', String(!open));
-        burger && burger.setAttribute('aria-expanded', String(open));
-        document.body.classList.toggle('menu-open', open);
-        document.body.style.overflow = open ? 'hidden' : '';
-        if (open) {
-            header.classList.remove('hide');
-            const first = $('.mobile-menu-links a', menu);
-            first && setTimeout(() => first.focus({ preventScroll: true }), 300);
-        } else if (burger && menu.contains(document.activeElement)) {
-            burger.focus({ preventScroll: true });
-        }
-    }
-    burger && burger.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
-    $$('[data-close-menu]').forEach((el) => el.addEventListener('click', () => setMenu(false)));
-    window.EDA.setMenu = setMenu;
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && menu && menu.classList.contains('open')) setMenu(false);
-    });
 
     /* ---------- Якорные ссылки: плавная прокрутка без #раздела в адресе ---------- */
     // Иначе адрес превращается в eda.bz/#delivery, и после обновления страница открывается не с начала
@@ -429,6 +406,33 @@
     window.addEventListener('resize', moveIndicator);
     document.fonts && document.fonts.ready.then(moveIndicator);
 
+    /* ---------- Меню: стеклянная «капля» перетекает за курсором между пунктами ---------- */
+    const navHover = $('.nav-hover');
+    if (nav && navHover && finePointer) {
+        navLinks.forEach((link) => link.addEventListener('pointerenter', () => {
+            const appearing = !navHover.classList.contains('on');
+            if (appearing) navHover.style.transition = 'none'; // появляется сразу под пунктом, без «подъезда» слева
+            navHover.style.width = `${link.offsetWidth}px`;
+            navHover.style.setProperty('--hx', `${link.offsetLeft}px`);
+            if (appearing) { void navHover.offsetWidth; navHover.style.transition = ''; }
+            navHover.classList.add('on');
+        }));
+        nav.addEventListener('pointerleave', () => navHover.classList.remove('on'));
+    }
+
+    /* ---------- Логотип в шапке: оборот и возврат на первый экран ---------- */
+    const headerLogo = $('.header-logo');
+    if (headerLogo && !reduceMotion) {
+        headerLogo.addEventListener('click', () => {
+            headerLogo.classList.remove('spin');
+            void headerLogo.offsetWidth; // перезапуск, если нажали во время вращения
+            headerLogo.classList.add('spin');
+        });
+        headerLogo.addEventListener('animationend', (e) => {
+            if (e.target === headerLogo && e.animationName === 'logoSpin') headerLogo.classList.remove('spin');
+        });
+    }
+
     /* ---------- Заголовки разделов: слова поднимаются по одному ---------- */
     if (!reduceMotion) {
         $$('.sec-title').forEach((title) => {
@@ -458,23 +462,34 @@
         });
     }
 
-    /* ---------- Reveal on scroll ---------- */
+    /* ---------- Появление при прокрутке: анимации проигрываются при каждом появлении на экране ----------
+       Блок получает .visible, когда виден хотя бы на 12%, и теряет его, когда полностью ушёл с экрана —
+       при следующем появлении всё (подъём, мазок под словом, слова заголовка, фургон…) играет заново. */
+    const revealEls = $$('[data-reveal], [data-draw]');
+    revealEls.forEach((el) => { el.dataset.d = el.style.getPropertyValue('--d') || '0'; });
     const revealIO = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
             const el = entry.target;
+            if (!entry.isIntersecting) {
+                // ушёл вверх — при возврате опустится на место сверху, а не всплывёт снизу
+                el.classList.toggle('from-top', entry.boundingClientRect.top < 0);
+                el.classList.remove('visible');
+                return;
+            }
+            if (entry.intersectionRatio < 0.12 || el.classList.contains('visible')) return;
+            el.style.setProperty('--d', el.dataset.d); // ступенчатая задержка — на каждое появление
             el.classList.add('visible');
-            revealIO.unobserve(el);
             // после появления убираем задержку, чтобы hover-эффекты срабатывали сразу
-            const done = (ev) => {
+            if (el._revealDone) el.removeEventListener('transitionend', el._revealDone);
+            el._revealDone = (ev) => {
                 if (ev.target !== el || ev.propertyName !== 'opacity') return;
                 el.style.setProperty('--d', '0');
-                el.removeEventListener('transitionend', done);
+                el.removeEventListener('transitionend', el._revealDone);
             };
-            el.addEventListener('transitionend', done);
+            el.addEventListener('transitionend', el._revealDone);
         });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    $$('[data-reveal], [data-draw]').forEach((el) => revealIO.observe(el));
+    }, { threshold: [0, 0.12] });
+    revealEls.forEach((el) => revealIO.observe(el));
 
     /* ---------- Трекер доставки: анимация идёт, только пока карточка на экране ---------- */
     const tracker = $('.tracker');
@@ -482,38 +497,51 @@
         new IntersectionObserver(([e]) => tracker.classList.toggle('playing', e.isIntersecting), { threshold: 0.3 }).observe(tracker);
     }
 
-    /* ---------- Count-up numbers ---------- */
+    /* ---------- Цифры набегают каждый раз, когда появляются на экране ---------- */
     const fmt = new Intl.NumberFormat('ru-RU');
+    const countFrom = (el) => (el.hasAttribute('data-plain') ? parseInt(el.dataset.count, 10) - 40 : 0);
+    const renderCount = (el, v) => { el.textContent = el.hasAttribute('data-plain') ? String(v) : fmt.format(v); };
     function countUp(el) {
         const target = parseInt(el.dataset.count, 10);
         if (!target) return;
-        const plain = el.hasAttribute('data-plain');
-        const from = plain ? target - 40 : 0;
-        const render = (v) => { el.textContent = plain ? String(v) : fmt.format(v); };
-        if (reduceMotion) { render(target); return; }
+        const run = (el._countRun || 0) + 1;
+        el._countRun = run;
+        if (reduceMotion) { renderCount(el, target); return; }
+        const from = countFrom(el);
         const dur = 1600;
         const t0 = performance.now();
         const step = (t) => {
+            if (el._countRun !== run) return; // ушёл с экрана — этот отсчёт больше не нужен
             const k = Math.min(1, (t - t0) / dur);
             const eased = k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
-            render(Math.round(from + (target - from) * eased));
+            renderCount(el, Math.round(from + (target - from) * eased));
             if (k < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
     }
     const countIO = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            countUp(entry.target);
-            countIO.unobserve(entry.target);
+            const el = entry.target;
+            if (!entry.isIntersecting) {
+                if (reduceMotion || !el.dataset.count) return;
+                el._countRun = (el._countRun || 0) + 1; // остановить идущий отсчёт
+                el._counted = false;
+                renderCount(el, countFrom(el));
+                return;
+            }
+            if (entry.intersectionRatio >= 0.6 && !el._counted) {
+                el._counted = true;
+                countUp(el);
+            }
         });
-    }, { threshold: 0.6 });
+    }, { threshold: [0, 0.6] });
     $$('[data-count]').forEach((el) => countIO.observe(el));
 
     /* ---------- 3D-наклон карточек услуг ---------- */
     if (finePointer && !reduceMotion) {
         $$('[data-tilt]').forEach((card) => {
             card.addEventListener('pointermove', (e) => {
+                clearTimeout(card._tiltReset);
                 const r = card.getBoundingClientRect();
                 const x = (e.clientX - r.left) / r.width;
                 const y = (e.clientY - r.top) / r.height;
@@ -525,6 +553,8 @@
             card.addEventListener('pointerleave', () => {
                 card.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s';
                 card.style.transform = '';
+                // вернуть переходы из CSS, иначе повторное появление карточки пройдёт без плавности
+                card._tiltReset = setTimeout(() => { card.style.transition = ''; }, 750);
             });
         });
     }
