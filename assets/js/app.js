@@ -87,20 +87,21 @@
         }
     });
 
-    // Панель прячется, пока открыто меню или просмотр фото
+    // Панель прячется, пока открыт просмотр фото
     document.addEventListener('eda:lightbox', (e) => bar.classList.toggle('tabbar-hidden', e.detail.open));
 
     /* ---------- Установка на главный экран ---------- */
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
     if (isStandalone) root.classList.add('is-standalone');
 
-    const menuFoot = $('.mobile-menu-foot');
+    // кнопка «Установить приложение» и подсказка для iPhone — в подвале сайта
+    const installSlot = $('#appInstall');
     let deferredPrompt = null;
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        if (!menuFoot || $('.install-btn', menuFoot)) return;
+        if (!installSlot || $('.install-btn', installSlot)) return;
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn btn-yellow btn-block install-btn';
@@ -113,17 +114,17 @@
             btn.remove();
             if (choice && choice.outcome === 'accepted' && window.EDA) window.EDA.toast('Приложение установлено');
         });
-        menuFoot.appendChild(btn);
+        installSlot.appendChild(btn);
     });
 
     const ua = navigator.userAgent;
     const isIOS = /iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const isTelegram = /tgWebApp/i.test(location.hash + location.search);
-    if (isIOS && !isStandalone && !isTelegram && menuFoot) {
+    if (isIOS && !isStandalone && !isTelegram && installSlot) {
         const hint = document.createElement('p');
         hint.className = 'install-hint';
         hint.innerHTML = `${icon('share')}<span>Добавьте сайт на экран «Домой»: нажмите «Поделиться», затем «На экран “Домой”»</span>`;
-        menuFoot.appendChild(hint);
+        installSlot.appendChild(hint);
     }
 
     /* ---------- Telegram Mini App ---------- */
@@ -175,22 +176,10 @@
             else tg.openLink(url);
         });
 
-        // Кнопка «Назад» закрывает меню и просмотр фото
+        // Кнопка «Назад» закрывает просмотр фото
         const back = tg.BackButton;
-        let overlays = 0;
-        const updateBack = () => { overlays > 0 ? back.show() : back.hide(); };
-        back.onClick(() => {
-            if (window.EDA && window.EDA.closeLightbox) window.EDA.closeLightbox();
-            if (window.EDA && window.EDA.setMenu) window.EDA.setMenu(false);
-        });
-        document.addEventListener('eda:lightbox', (e) => { overlays = e.detail.open ? 1 : 0; updateBack(); });
-        const menu = $('#mobileMenu');
-        if (menu) {
-            new MutationObserver(() => {
-                overlays = menu.classList.contains('open') || ($('#lightbox') && $('#lightbox').open) ? 1 : 0;
-                updateBack();
-            }).observe(menu, { attributes: true, attributeFilter: ['class'] });
-        }
+        back.onClick(() => { if (window.EDA && window.EDA.closeLightbox) window.EDA.closeLightbox(); });
+        document.addEventListener('eda:lightbox', (e) => { if (e.detail.open) back.show(); else back.hide(); });
 
         // Тактильный отклик на кнопки
         document.addEventListener('click', (e) => {
