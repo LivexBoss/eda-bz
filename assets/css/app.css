@@ -22,9 +22,11 @@
         box-shadow: 0 10px 30px -8px rgba(40, 20, 10, 0.3), 0 2px 6px rgba(40, 20, 10, 0.08);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
         backdrop-filter: saturate(180%) blur(20px);
-        animation: tabbarIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.2s backwards;
+        animation: tabbarIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.5s backwards;
         transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
     }
+    /* панель выезжает после заставки первого экрана */
+    .js:not(.intro-go) .tabbar { animation-play-state: paused; }
     :root[data-theme="dark"] .tabbar { box-shadow: 0 10px 30px -6px rgba(0, 0, 0, 0.6); }
     body.menu-open .tabbar,
     .tabbar.tabbar-hidden { transform: translateY(140%); opacity: 0; pointer-events: none; }
